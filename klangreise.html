@@ -917,6 +917,38 @@
             background: rgba(107, 203, 119, 0.85);
         }
 
+        .echo-key.target {
+            box-shadow: 0 0 0 3px rgba(255, 217, 61, 0.22), 0 0 22px rgba(255, 217, 61, 0.25);
+            animation: echoPulse 1.6s ease-in-out infinite;
+        }
+
+        .echo-key.flash {
+            box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.32), 0 0 28px rgba(255, 107, 107, 0.38);
+        }
+
+        @keyframes echoPulse {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
+        }
+
+        .echo-magnet {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            border-radius: 999px;
+            background: radial-gradient(circle, rgba(107, 203, 119, 0.95), rgba(107, 203, 119, 0.2));
+            box-shadow: 0 0 18px rgba(107, 203, 119, 0.45);
+            opacity: 0;
+            transform: translate(-9999px, -9999px);
+            pointer-events: none;
+            transition: transform 0.5s ease-out, opacity 0.3s ease-out;
+            z-index: 5;
+        }
+
+        .echo-magnet.active {
+            opacity: 1;
+        }
+
         .echo-celebrate {
             position: absolute;
             inset: 0;
@@ -1232,6 +1264,10 @@
                 playTimeouts: [],
                 playNodes: [],
                 pendingStart: false,
+                currentOctave: 4,
+                missTimeout: null,
+                lastHintAt: 0,
+                lastHintStep: -1,
                 heardRecently: null,
                 lastRoundId: 0
             },
@@ -1325,7 +1361,16 @@
             const note = Math.round(noteNum) + 69;
             const octave = Math.floor(note / 12) - 1;
             const noteName = noteStrings[note % 12];
-            return { name: noteName, octave: octave, full: `${noteName}${octave}` };
+            const exactMidi = noteNum + 69;
+            const cents = (exactMidi - note) * 100;
+            return {
+                name: noteName,
+                octave: octave,
+                full: `${noteName}${octave}`,
+                frequency: frequency,
+                cents: cents,
+                midi: note
+            };
         }
 
         function autoCorrelate(buffer, sampleRate) {
@@ -1456,7 +1501,8 @@
             replayBtn: null,
             nextBtn: null,
             celebrateEl: null,
-            whiteContainer: null
+            whiteContainer: null,
+            magnetEl: null
         };
 
         function initEchoGame() {
@@ -1504,6 +1550,11 @@
             whiteWrap.className = 'echo-white-keys';
             echoUI.whiteContainer = whiteWrap;
             echoUI.pianoEl.appendChild(whiteWrap);
+
+            const magnet = document.createElement('div');
+            magnet.className = 'echo-magnet';
+            echoUI.magnetEl = magnet;
+            echoUI.pianoEl.appendChild(magnet);
 
             // White keys (one octave: C D E F G A B)
             echoWhiteNotes.forEach((n) => {
@@ -1589,11 +1640,33 @@
             state.echo.mode = 'idle';
             state.echo.step = 0;
             state.echo.mistakes = 0;
+            clearEchoMissTimeout();
+            setEchoTarget(null);
+            if (echoUI.magnetEl) echoUI.magnetEl.classList.remove('active');
         }
 
         function getEchoLevelConfig() {
             const lvl = clampNumber(state.echo.level, 1, state.echo.maxLevel);
             return echoLevels.find(l => l.level === lvl) || echoLevels[0];
+        }
+
+        function getEchoTolerance(level) {
+            const successThreshold = 30;
+            const magneticThreshold = level <= 2 ? 120 : 100;
+            return { successThreshold, magneticThreshold };
+        }
+
+        function evaluateEchoNote(targetFreq, playedFreq, level) {
+            if (!targetFreq || !playedFreq) return 'MISS';
+            if (!isFinite(targetFreq) || !isFinite(playedFreq)) return 'MISS';
+            if (targetFreq <= 0 || playedFreq <= 0) return 'MISS';
+            const distanceInCents = 1200 * Math.log2(playedFreq / targetFreq);
+            const absDistance = Math.abs(distanceInCents);
+            const { successThreshold, magneticThreshold } = getEchoTolerance(level);
+
+            if (absDistance <= successThreshold) return 'MATCH';
+            if (absDistance <= magneticThreshold) return 'NEAR';
+            return 'MISS';
         }
 
         function pickRandom(arr) {
@@ -1654,6 +1727,100 @@
             }
         }
 
+        function clearEchoMissTimeout() {
+            if (state.echo.missTimeout) {
+                clearTimeout(state.echo.missTimeout);
+                state.echo.missTimeout = null;
+            }
+        }
+
+        function setEchoTarget(noteName) {
+            if (!echoUI.pianoEl) return;
+            echoUI.pianoEl.querySelectorAll('.echo-key.target').forEach(k => k.classList.remove('target'));
+            if (!noteName) return;
+            const normalized = normalizeNoteName(noteName);
+            const el = echoUI.pianoEl.querySelector(`.echo-key[data-note="${normalized}"]`);
+            if (el) el.classList.add('target');
+        }
+
+        function flashEchoTarget(noteName) {
+            if (!echoUI.pianoEl) return;
+            const normalized = normalizeNoteName(noteName);
+            const el = echoUI.pianoEl.querySelector(`.echo-key[data-note="${normalized}"]`);
+            if (!el) return;
+            el.classList.add('flash');
+            const t = setTimeout(() => el.classList.remove('flash'), 350);
+            state.echo.playTimeouts.push(t);
+        }
+
+        function showMagnetFlow(fromNote, toNote) {
+            if (!echoUI.magnetEl || !echoUI.pianoEl) return;
+            const fromEl = echoUI.pianoEl.querySelector(`.echo-key[data-note="${normalizeNoteName(fromNote)}"]`);
+            const toEl = echoUI.pianoEl.querySelector(`.echo-key[data-note="${normalizeNoteName(toNote)}"]`);
+            if (!fromEl || !toEl) return;
+
+            const pianoRect = echoUI.pianoEl.getBoundingClientRect();
+            const fromRect = fromEl.getBoundingClientRect();
+            const toRect = toEl.getBoundingClientRect();
+            const fromX = fromRect.left + fromRect.width / 2 - pianoRect.left - 8;
+            const fromY = fromRect.top + fromRect.height / 2 - pianoRect.top - 8;
+            const toX = toRect.left + toRect.width / 2 - pianoRect.left - 8;
+            const toY = toRect.top + toRect.height / 2 - pianoRect.top - 8;
+
+            echoUI.magnetEl.classList.remove('active');
+            echoUI.magnetEl.style.transform = `translate(${fromX}px, ${fromY}px)`;
+            // Force reflow for transition
+            void echoUI.magnetEl.offsetWidth;
+            echoUI.magnetEl.classList.add('active');
+            echoUI.magnetEl.style.transform = `translate(${toX}px, ${toY}px)`;
+
+            const t = setTimeout(() => {
+                if (echoUI.magnetEl) echoUI.magnetEl.classList.remove('active');
+            }, 520);
+            state.echo.playTimeouts.push(t);
+        }
+
+        function playEchoWhisper(noteName) {
+            if (!state.audioContext) return;
+            const midi = noteNameToMidi(noteName, state.echo.currentOctave || 4);
+            const freq = midi ? midiToFrequency(midi) : null;
+            if (!freq) return;
+
+            const ctx = state.audioContext;
+            const when = ctx.currentTime + 0.02;
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(freq, when);
+            gain.gain.setValueAtTime(0.0001, when);
+            gain.gain.linearRampToValueAtTime(0.05, when + 0.02);
+            gain.gain.exponentialRampToValueAtTime(0.0001, when + 0.26);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start(when);
+            osc.stop(when + 0.3);
+            state.echo.playNodes.push({ osc, gain });
+            highlightEchoKey(noteName, 'playing', 220);
+        }
+
+        function playEchoChime() {
+            if (!state.audioContext) return;
+            const ctx = state.audioContext;
+            const when = ctx.currentTime + 0.02;
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(880, when);
+            gain.gain.setValueAtTime(0.0001, when);
+            gain.gain.linearRampToValueAtTime(0.08, when + 0.02);
+            gain.gain.exponentialRampToValueAtTime(0.0001, when + 0.35);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start(when);
+            osc.stop(when + 0.4);
+            state.echo.playNodes.push({ osc, gain });
+        }
+
         function highlightEchoKey(noteName, className, holdMs) {
             if (!echoUI.pianoEl) return;
             const normalized = normalizeNoteName(noteName);
@@ -1672,6 +1839,7 @@
             }
 
             cancelEchoPlayback();
+            clearEchoMissTimeout();
             state.echo.isPlaying = true;
             state.echo.mode = 'playing';
             updateEchoControls();
@@ -1680,6 +1848,7 @@
             const tempoMs = levelConfig.tempoMs;
             const rhythm = Array.isArray(levelConfig.rhythm) ? levelConfig.rhythm : null;
             const baseOctave = typeof levelConfig.octave === 'number' ? levelConfig.octave : 4;
+            state.echo.currentOctave = baseOctave;
             const startAt = ctx.currentTime + 0.08;
 
             let cursor = 0;
@@ -1728,6 +1897,7 @@
             state.echo.mode = 'awaiting';
             updateEchoControls();
             setEchoStatus('Jetzt du. Hör mit deinen Ohren und spiel es nach.');
+            setEchoTarget(state.echo.expected[state.echo.step]);
         }
 
         async function startEchoRound({ replay }) {
@@ -1751,6 +1921,9 @@
             state.echo.step = 0;
             state.echo.mode = 'idle';
             state.echo.lastRoundId = Date.now();
+            state.echo.lastHintStep = -1;
+            state.echo.lastHintAt = 0;
+            clearEchoMissTimeout();
 
             if (!replay || state.echo.expected.length === 0) {
                 state.echo.expected = generateEchoSequence(levelConfig);
@@ -1760,6 +1933,7 @@
             if (echoUI.pianoEl) {
                 echoUI.pianoEl.querySelectorAll('.echo-key.heard').forEach(k => k.classList.remove('heard'));
             }
+            setEchoTarget(null);
 
             setEchoStatus('Ich spiele vor...');
             await playEchoSequence(state.echo.expected, levelConfig);
@@ -1801,33 +1975,75 @@
             const expectedPc = noteNameToPitchClass(expectedName);
             if (expectedPc < 0) return;
 
-            const tolerance = 1; // +/- 1 Halbton
-            const dist = pitchClassDistance(pc, expectedPc);
-            if (dist > tolerance) {
+            const playedFreq = note.frequency || null;
+            const targetMidi = noteNameToMidi(expectedName, state.echo.currentOctave || 4);
+            const targetFreq = targetMidi ? midiToFrequency(targetMidi) : null;
+            const result = evaluateEchoNote(targetFreq, playedFreq, state.echo.level);
+
+            clearEchoMissTimeout();
+
+            if (result === 'NEAR') {
+                const now = performance.now();
+                if (now - state.echo.lastHintAt > 700 || state.echo.lastHintStep !== state.echo.step) {
+                    showMagnetFlow(note.name, expectedName);
+                    setEchoStatus('Fast da. Such den Klang noch ein bisschen.');
+                    state.echo.lastHintAt = now;
+                    state.echo.lastHintStep = state.echo.step;
+                }
+                if (state.echo.level <= 2) {
+                    // Early levels accept "near" to keep momentum.
+                    handleEchoMatch();
+                }
+                return;
+            }
+
+            if (result === 'MISS') {
                 state.echo.mistakes += 1;
+                flashEchoTarget(expectedName);
+
+                if (!state.echo.missTimeout) {
+                    state.echo.missTimeout = setTimeout(() => {
+                        state.echo.missTimeout = null;
+                        if (state.echo.mode !== 'awaiting') return;
+                        if (state.echo.isPlaying) return;
+                        if (state.echo.expected[state.echo.step] !== expectedName) return;
+                        playEchoWhisper(expectedName);
+                    }, 2000);
+                }
+
                 if (state.echo.mistakes === 3) {
-                    setEchoStatus('Magst du es nochmal hoeren? Ich spiele es dir gern nochmal vor.');
+                    setEchoStatus('Wenn du magst, spiele ich es dir nochmal vor.');
                 }
                 if (state.echo.mistakes >= 6) {
-                    // Gentle reset: replay after some wandering notes.
                     state.echo.mistakes = 0;
                     startEchoRound({ replay: true });
                 }
                 return;
             }
 
-            state.echo.step += 1;
-            state.echo.mistakes = 0;
+            // MATCH
+            handleEchoMatch();
 
-            if (state.echo.step >= state.echo.expected.length) {
-                state.echo.mode = 'success';
-                setEchoStatus('Wow. Dein Echo war wunderschön. Wenn du magst: weiter.');
-                echoCelebrate();
-                updateEchoControls();
-                return;
+            function handleEchoMatch() {
+                highlightEchoKey(expectedName, 'playing', 260);
+                state.echo.step += 1;
+                state.echo.mistakes = 0;
+                setEchoStatus('Schön! Und jetzt kommt noch ein Klang...');
+
+                if (state.echo.step >= state.echo.expected.length) {
+                    state.echo.mode = 'success';
+                    setEchoStatus('Wow. Dein Echo war wunderschön. Wenn du magst: weiter.');
+                    echoCelebrate();
+                    playEchoChime();
+                    updateEchoControls();
+                    setEchoTarget(null);
+                    state.gardenProgress += 5;
+                    scheduleGardenSave();
+                    return;
+                }
+
+                setEchoTarget(state.echo.expected[state.echo.step]);
             }
-
-            setEchoStatus('Schön! Und jetzt kommt noch ein Klang...');
         }
 
         // ==================== VISUALIZATION ====================
