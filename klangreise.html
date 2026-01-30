@@ -692,6 +692,155 @@
             box-shadow: 0 4px 20px rgba(107, 203, 119, 0.4);
         }
 
+        /* Island Navigation */
+        .island-screen {
+            padding: 2rem 0 3rem;
+        }
+
+        .island-map {
+            position: relative;
+            min-height: 520px;
+            border-radius: 2.5rem;
+            padding: 2.5rem;
+            background: radial-gradient(circle at 20% 20%, rgba(255, 217, 61, 0.25), rgba(26, 26, 46, 0.95)),
+                        radial-gradient(circle at 80% 30%, rgba(77, 150, 255, 0.18), transparent 55%),
+                        linear-gradient(160deg, rgba(22, 33, 62, 0.9), rgba(10, 12, 28, 0.98));
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            overflow: hidden;
+        }
+
+        .island-map[data-theme="night"] {
+            background: radial-gradient(circle at 20% 20%, rgba(77, 150, 255, 0.2), rgba(10, 12, 28, 0.98)),
+                        radial-gradient(circle at 80% 20%, rgba(155, 93, 229, 0.18), transparent 55%),
+                        linear-gradient(160deg, rgba(10, 12, 28, 0.95), rgba(6, 8, 20, 0.98));
+        }
+
+        .island-map[data-theme="sunrise"] {
+            background: radial-gradient(circle at 20% 20%, rgba(255, 217, 61, 0.4), rgba(26, 26, 46, 0.92)),
+                        radial-gradient(circle at 80% 30%, rgba(255, 107, 107, 0.25), transparent 55%),
+                        linear-gradient(160deg, rgba(22, 33, 62, 0.9), rgba(10, 12, 28, 0.95));
+        }
+
+        .island-map[data-theme="sunset"] {
+            background: radial-gradient(circle at 20% 20%, rgba(255, 107, 107, 0.35), rgba(26, 26, 46, 0.95)),
+                        radial-gradient(circle at 80% 30%, rgba(255, 217, 61, 0.2), transparent 55%),
+                        linear-gradient(160deg, rgba(22, 33, 62, 0.9), rgba(10, 12, 28, 0.98));
+        }
+
+        .island-glow {
+            position: absolute;
+            inset: -40% -40% auto auto;
+            width: 380px;
+            height: 380px;
+            background: radial-gradient(circle, rgba(255, 217, 61, 0.15), transparent 70%);
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .island-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 0.6rem;
+        }
+
+        .island-subtitle {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .island-landmark {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 1.5rem;
+            padding: 0.9rem 1.2rem;
+            min-width: 150px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+
+        .island-landmark:hover {
+            transform: translateY(-3px);
+            border-color: rgba(255, 255, 255, 0.35);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .island-landmark.disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .landmark-icon {
+            font-size: 2rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .landmark-label {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1rem;
+        }
+
+        .landmark-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 0.4rem;
+            font-size: 0.85rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 999px;
+            background: rgba(0, 0, 0, 0.35);
+            color: var(--text-light);
+        }
+
+        .island-garden {
+            position: absolute;
+            left: 50%;
+            top: 52%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-radius: 2rem;
+            padding: 1.2rem 1.4rem;
+            text-align: center;
+            min-width: 180px;
+        }
+
+        .island-garden .landmark-icon {
+            font-size: 2.4rem;
+        }
+
+        .compass-btn {
+            position: fixed;
+            right: 1.5rem;
+            bottom: 1.5rem;
+            width: 62px;
+            height: 62px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            cursor: pointer;
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
+            transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+            z-index: 20;
+        }
+
+        .compass-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 16px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .compass-btn.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
         /* Module tabs (inside "Spielen") */
         .module-tabs {
             display: flex;
@@ -1173,6 +1322,47 @@
             margin-top: 1.3rem;
         }
 
+        .impro-mix {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            margin-top: 1.2rem;
+            flex-wrap: wrap;
+        }
+
+        .impro-slider {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .impro-slider input[type="range"] {
+            width: 140px;
+        }
+
+        .impro-loop-panel {
+            margin-top: 1.5rem;
+            background: rgba(0, 0, 0, 0.18);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 1.2rem;
+            padding: 1rem 1.2rem;
+        }
+
+        .impro-loop-status {
+            font-size: 0.95rem;
+            color: var(--text-light);
+            margin-bottom: 0.8rem;
+        }
+
+        .impro-loop-controls {
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+        }
+
         .impro-btn {
             background: rgba(255, 255, 255, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.14);
@@ -1237,6 +1427,15 @@
             .impro-piano {
                 height: 160px;
             }
+
+            .island-map {
+                padding: 1.6rem;
+                min-height: 460px;
+            }
+
+            .island-landmark {
+                min-width: 130px;
+            }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -1265,15 +1464,55 @@
 
         <!-- Navigation -->
         <nav class="nav-tabs">
-            <button class="nav-tab active" data-screen="welcome">Start</button>
+            <button class="nav-tab active" data-screen="island">Insel</button>
+            <button class="nav-tab" data-screen="welcome">Start</button>
             <button class="nav-tab" data-screen="play">Spielen</button>
             <button class="nav-tab" data-screen="worlds">Klangwelten</button>
             <button class="nav-tab" data-screen="diary">Klangtagebuch</button>
             <button class="nav-tab" data-screen="garden">Mein Garten</button>
         </nav>
 
+        <!-- Island Screen -->
+        <section class="screen active island-screen" id="island">
+            <div class="island-title">Deine Klang-Insel</div>
+            <div class="island-subtitle">Tippe ein Wahrzeichen an, um loszulegen.</div>
+            <div class="island-map" id="islandMap" data-theme="sunrise">
+                <div class="island-glow"></div>
+                <button class="island-landmark" style="left: 8%; top: 18%;" data-landmark="echo" data-screen="play" data-module="echo">
+                    <div class="landmark-icon">⛰️</div>
+                    <div class="landmark-label">Echo-Höhlen</div>
+                    <div class="landmark-badge" id="badgeEcho">Level 1</div>
+                </button>
+                <button class="island-landmark" style="right: 10%; top: 20%;" data-landmark="chords" data-screen="play" data-module="chords" data-disabled="true" disabled>
+                    <div class="landmark-icon">💎</div>
+                    <div class="landmark-label">Kristall-Lagune</div>
+                    <div class="landmark-badge">Bald</div>
+                </button>
+                <button class="island-landmark" style="left: 14%; bottom: 16%;" data-landmark="impro" data-screen="play" data-module="impro">
+                    <div class="landmark-icon">🌾</div>
+                    <div class="landmark-label">Impro-Wiese</div>
+                    <div class="landmark-badge" id="badgeImpro">Loops 0</div>
+                </button>
+                <button class="island-landmark" style="right: 12%; bottom: 18%;" data-landmark="stories" data-screen="play" data-module="stories" data-disabled="true" disabled>
+                    <div class="landmark-icon">🌳</div>
+                    <div class="landmark-label">Vorlese-Eiche</div>
+                    <div class="landmark-badge">Bald</div>
+                </button>
+                <button class="island-landmark" style="left: 52%; top: 12%;" data-landmark="feelings" data-screen="play" data-module="feelings" data-disabled="true" disabled>
+                    <div class="landmark-icon">🥚</div>
+                    <div class="landmark-label">Gefühls-Nest</div>
+                    <div class="landmark-badge">Bald</div>
+                </button>
+                <button class="island-garden" id="islandGarden" data-screen="garden">
+                    <div class="landmark-icon">🌿</div>
+                    <div class="landmark-label">Klanggarten</div>
+                    <div class="landmark-badge" id="badgeGarden">Wachstum 0</div>
+                </button>
+            </div>
+        </section>
+
         <!-- Welcome Screen -->
-        <section class="screen active" id="welcome">
+        <section class="screen" id="welcome">
             <div class="welcome-container">
                 <div class="welcome-illustration">🎵</div>
                 <p class="welcome-text">
@@ -1397,6 +1636,25 @@
                         <button class="impro-btn primary" id="improListenBtn">🎤 Zuhören</button>
                         <button class="impro-btn" id="improResponseBtn">🌬️ Antwort spielen</button>
                     </div>
+
+                    <div class="impro-mix">
+                        <label class="impro-slider">
+                            Begleitung
+                            <input type="range" id="improBackingVolume" min="0" max="1" step="0.01" value="0.35">
+                        </label>
+                        <label class="impro-slider">
+                            Loop
+                            <input type="range" id="improLoopVolume" min="0" max="1" step="0.01" value="0.85">
+                        </label>
+                    </div>
+
+                    <div class="impro-loop-panel">
+                        <div class="impro-loop-status" id="improLoopStatus">Kein Loop aufgenommen.</div>
+                        <div class="impro-loop-controls">
+                            <button class="impro-btn" id="improLoopBtn">🔁 Loop aufnehmen</button>
+                            <button class="impro-btn" id="improLoopClearBtn">🧹 Loops löschen</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -1470,6 +1728,8 @@
         </section>
     </div>
 
+    <button class="compass-btn hidden" id="compassBtn" aria-label="Zur Insel">🧭</button>
+
     <!-- Microphone Permission Modal -->
     <div class="modal-overlay" id="micModal">
         <div class="modal-content">
@@ -1514,11 +1774,15 @@
         }
 
         function loadImproPrefs() {
-            const fallback = { space: 'sun' };
+            const fallback = { space: 'sun', backingVolume: 0.35, loopVolume: 0.85 };
             const parsed = safeJsonParse(localStorage.getItem('klangreise_impro') || 'null', null);
             if (!parsed || typeof parsed !== 'object') return fallback;
             if (typeof parsed.space !== 'string') return fallback;
-            return { space: parsed.space };
+            return {
+                space: parsed.space,
+                backingVolume: typeof parsed.backingVolume === 'number' ? parsed.backingVolume : fallback.backingVolume,
+                loopVolume: typeof parsed.loopVolume === 'number' ? parsed.loopVolume : fallback.loopVolume
+            };
         }
 
         function saveImproPrefs(prefs) {
@@ -1529,17 +1793,77 @@
             }
         }
 
+        const defaultAppState = {
+            user: {
+                ageGroup: 'entdecker',
+                currentIslandTheme: 'sunrise',
+                lastVisit: Date.now(),
+                introSeen: false
+            },
+            garden: {
+                unlockedPlants: [],
+                growthPoints: 0
+            },
+            progress: {
+                echoCave: { currentLevel: 1, completed: 0 },
+                chordLagoon: { discoveredEmotions: [], totalChords: 0 },
+                storyTree: { completedStories: [] },
+                improMeadow: { loopsRecorded: 0, sessions: 0 },
+                feelingsNest: { used: 0 }
+            },
+            session: {
+                activeScreen: 'island',
+                activeModule: 'free',
+                audioContextStarted: false
+            }
+        };
+
+        function deepMerge(target, source) {
+            if (!source || typeof source !== 'object') return target;
+            Object.keys(source).forEach((key) => {
+                const value = source[key];
+                if (value && typeof value === 'object' && !Array.isArray(value)) {
+                    if (!target[key] || typeof target[key] !== 'object') target[key] = {};
+                    deepMerge(target[key], value);
+                } else {
+                    target[key] = value;
+                }
+            });
+            return target;
+        }
+
+        function loadAppState() {
+            const fallback = JSON.parse(JSON.stringify(defaultAppState));
+            const parsed = safeJsonParse(localStorage.getItem('klangreise_state') || 'null', null);
+            if (!parsed || typeof parsed !== 'object') return fallback;
+            return deepMerge(fallback, parsed);
+        }
+
+        function saveAppState() {
+            try {
+                localStorage.setItem('klangreise_state', JSON.stringify(appState));
+            } catch (err) {
+                console.warn('Could not save app state:', err);
+            }
+        }
+
+        const appState = loadAppState();
+
         // ==================== APP STATE ====================
         const state = {
             isListening: false,
             isRecording: false,
             currentWorld: null,
-            currentModule: 'free',
+            currentModule: appState.session.activeModule || 'free',
             audioContext: null,
             analyser: null,
             microphone: null,
+            mediaStream: null,
             recordings: JSON.parse(localStorage.getItem('klangreise_recordings') || '[]'),
-            gardenProgress: parseInt(localStorage.getItem('klangreise_garden') || '0'),
+            gardenProgress: Math.max(
+                parseInt(localStorage.getItem('klangreise_garden') || '0'),
+                appState.garden.growthPoints || 0
+            ),
             noteHistory: [],
             recordedChunks: [],
             mediaRecorder: null,
@@ -1578,7 +1902,21 @@
                 responseEnabled: true,
                 pendingStart: false,
                 timeouts: [],
-                visualTimeout: null
+                visualTimeout: null,
+                backingVolume: 0.35,
+                loopVolume: 0.85,
+                backingGain: 0.012,
+                backingTracks: {},
+                backingReady: {},
+                activeBackingId: null,
+                backingIntensity: 0,
+                loops: [],
+                isLoopRecording: false,
+                loopRecorder: null,
+                loopChunks: [],
+                loopTimer: null,
+                loopDurationMs: 4000,
+                pendingLoopStart: false
             },
             pitchTracker: {
                 stableFramesNeeded: 4,
@@ -1768,6 +2106,7 @@
             try {
                 state.audioContext = new (window.AudioContext || window.webkitAudioContext)();
                 const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                state.mediaStream = stream;
 
                 if (state.audioContext.state === 'suspended') {
                     await state.audioContext.resume();
@@ -1790,11 +2129,89 @@
                     console.warn('MediaRecorder is not supported in this browser.');
                 }
 
+                appState.session.audioContextStarted = true;
+                saveAppState();
+
                 return true;
             } catch (err) {
                 console.error('Audio setup failed:', err);
                 return false;
             }
+        }
+
+        // ==================== ISLAND + NAVIGATION ====================
+        function getIslandTheme() {
+            const hour = new Date().getHours();
+            if (hour >= 20 || hour < 6) return 'night';
+            if (hour >= 6 && hour < 11) return 'sunrise';
+            if (hour >= 17 && hour < 20) return 'sunset';
+            return 'day';
+        }
+
+        function applyIslandTheme() {
+            const theme = getIslandTheme();
+            appState.user.currentIslandTheme = theme;
+            appState.user.lastVisit = Date.now();
+            saveAppState();
+            const map = document.getElementById('islandMap');
+            if (map) map.dataset.theme = theme;
+        }
+
+        function updateIslandView() {
+            const echoBadge = document.getElementById('badgeEcho');
+            const improBadge = document.getElementById('badgeImpro');
+            const gardenBadge = document.getElementById('badgeGarden');
+
+            if (echoBadge) {
+                const level = appState.progress.echoCave.currentLevel || state.echo.level || 1;
+                echoBadge.textContent = `Level ${level}`;
+            }
+            if (improBadge) {
+                improBadge.textContent = `Loops ${appState.progress.improMeadow.loopsRecorded || 0}`;
+            }
+            if (gardenBadge) {
+                gardenBadge.textContent = `Wachstum ${appState.garden.growthPoints || 0}`;
+            }
+        }
+
+        function updateCompassVisibility(screenId) {
+            const compass = document.getElementById('compassBtn');
+            if (!compass) return;
+            const hide = screenId === 'island' || screenId === 'welcome';
+            compass.classList.toggle('hidden', hide);
+        }
+
+        function openScreen(screenId) {
+            document.querySelectorAll('.nav-tab').forEach((tab) => {
+                tab.classList.toggle('active', tab.dataset.screen === screenId);
+            });
+            document.querySelectorAll('.screen').forEach((screen) => {
+                screen.classList.toggle('active', screen.id === screenId);
+            });
+
+            if (screenId === 'garden') updateGardenView();
+            if (screenId === 'diary') updateDiaryView();
+            if (screenId === 'island') {
+                applyIslandTheme();
+                updateIslandView();
+            }
+            if (screenId === 'play') {
+                const candidate = state.currentModule || 'free';
+                const exists = document.getElementById(`module-${candidate}`);
+                setActiveModule(exists ? candidate : 'free');
+            }
+
+            appState.session.activeScreen = screenId;
+            appState.session.activeModule = state.currentModule;
+            saveAppState();
+            updateCompassVisibility(screenId);
+        }
+
+        function openModule(moduleName) {
+            const target = document.getElementById(`module-${moduleName}`);
+            if (!target) return;
+            state.currentModule = moduleName;
+            openScreen('play');
         }
 
         // ==================== MODULE SWITCH (INSIDE PLAY) ====================
@@ -1806,6 +2223,9 @@
             document.querySelectorAll('.module-screen').forEach(s => {
                 s.classList.toggle('active', s.id === `module-${moduleName}`);
             });
+
+            appState.session.activeModule = moduleName;
+            saveAppState();
 
             if (moduleName === 'echo') {
                 enterEchoMode();
@@ -1863,6 +2283,12 @@
             echoUI.celebrateEl = document.getElementById('echoCelebrate');
 
             state.echo.level = clampNumber(state.echoProgress.level || 1, 1, state.echo.maxLevel);
+            appState.progress.echoCave.currentLevel = Math.max(
+                appState.progress.echoCave.currentLevel || 1,
+                state.echo.level
+            );
+            appState.garden.growthPoints = Math.max(appState.garden.growthPoints || 0, state.gardenProgress || 0);
+            saveAppState();
             renderEchoProgress();
             renderEchoPiano();
             updateEchoControls();
@@ -2293,6 +2719,9 @@
             state.echo.level = nextLevel;
             state.echoProgress.level = nextLevel;
             saveEchoProgress(state.echoProgress);
+            appState.progress.echoCave.currentLevel = nextLevel;
+            saveAppState();
+            updateIslandView();
             renderEchoProgress();
             state.echo.mode = 'idle';
             state.echo.step = 0;
@@ -2387,6 +2816,10 @@
                     setEchoTarget(null);
                     state.gardenProgress += 5;
                     scheduleGardenSave();
+                    appState.progress.echoCave.completed = (appState.progress.echoCave.completed || 0) + 1;
+                    appState.progress.echoCave.currentLevel = state.echo.level;
+                    saveAppState();
+                    updateIslandView();
                     return;
                 }
 
@@ -2403,7 +2836,12 @@
             pianoEl: null,
             whiteContainer: null,
             listenBtn: null,
-            responseBtn: null
+            responseBtn: null,
+            loopStatusEl: null,
+            loopBtn: null,
+            loopClearBtn: null,
+            backingVolumeInput: null,
+            loopVolumeInput: null
         };
 
         function initImproPlayground() {
@@ -2414,10 +2852,21 @@
             improUI.pianoEl = document.getElementById('improPiano');
             improUI.listenBtn = document.getElementById('improListenBtn');
             improUI.responseBtn = document.getElementById('improResponseBtn');
+            improUI.loopStatusEl = document.getElementById('improLoopStatus');
+            improUI.loopBtn = document.getElementById('improLoopBtn');
+            improUI.loopClearBtn = document.getElementById('improLoopClearBtn');
+            improUI.backingVolumeInput = document.getElementById('improBackingVolume');
+            improUI.loopVolumeInput = document.getElementById('improLoopVolume');
 
             state.impro.currentSpace = state.improPrefs.space || 'sun';
+            state.impro.backingVolume = clampNumber(state.improPrefs.backingVolume ?? 0.35, 0, 1);
+            state.impro.loopVolume = clampNumber(state.improPrefs.loopVolume ?? 0.85, 0, 1);
             applyImproSpace(state.impro.currentSpace, { announce: false });
             renderImproPiano();
+            initImproBackingTracks();
+            updateImproLoopStatus();
+            updateImproBackingIntensity();
+            updateImproBackingVolume();
 
             if (improUI.worldsEl) {
                 improUI.worldsEl.querySelectorAll('.impro-world').forEach((card) => {
@@ -2440,6 +2889,48 @@
                 });
             }
 
+            if (improUI.loopBtn) {
+                improUI.loopBtn.addEventListener('click', () => {
+                    if (state.currentModule !== 'impro') return;
+                    startImproLoopRecording();
+                });
+            }
+
+            if (improUI.loopClearBtn) {
+                improUI.loopClearBtn.addEventListener('click', () => {
+                    clearImproLoops();
+                });
+            }
+
+            if (improUI.loopBtn && typeof MediaRecorder === 'undefined') {
+                improUI.loopBtn.disabled = true;
+                if (improUI.loopStatusEl) {
+                    improUI.loopStatusEl.textContent = 'Loop-Aufnahme ist in diesem Browser nicht verfuegbar.';
+                }
+            }
+
+            if (improUI.backingVolumeInput) {
+                improUI.backingVolumeInput.value = state.impro.backingVolume;
+                improUI.backingVolumeInput.addEventListener('input', (event) => {
+                    const value = parseFloat(event.target.value);
+                    state.impro.backingVolume = clampNumber(value, 0, 1);
+                    state.improPrefs.backingVolume = state.impro.backingVolume;
+                    saveImproPrefs(state.improPrefs);
+                    updateImproBackingVolume();
+                });
+            }
+
+            if (improUI.loopVolumeInput) {
+                improUI.loopVolumeInput.value = state.impro.loopVolume;
+                improUI.loopVolumeInput.addEventListener('input', (event) => {
+                    const value = parseFloat(event.target.value);
+                    state.impro.loopVolume = clampNumber(value, 0, 1);
+                    state.improPrefs.loopVolume = state.impro.loopVolume;
+                    saveImproPrefs(state.improPrefs);
+                    updateImproLoopVolume();
+                });
+            }
+
             window.addEventListener('resize', layoutImproBlackKeys, { passive: true });
         }
 
@@ -2447,6 +2938,9 @@
             applyImproSpace(state.improPrefs.space || state.impro.currentSpace || 'sun', { announce: false });
             ensureImproListening(true);
             startImproBacking();
+            resumeImproLoops();
+            appState.progress.improMeadow.sessions = (appState.progress.improMeadow.sessions || 0) + 1;
+            saveAppState();
             if (state.audioContext) {
                 setImproStatus('Spiel los. Die leuchtenden Tasten klingen immer gut zusammen.');
             } else {
@@ -2459,7 +2953,19 @@
             stopImproBacking();
             clearImproCall();
             clearImproTimeouts();
+            pauseImproLoops();
             state.impro.pendingStart = false;
+            state.impro.pendingLoopStart = false;
+            if (state.impro.loopTimer) {
+                clearTimeout(state.impro.loopTimer);
+                state.impro.loopTimer = null;
+            }
+            if (state.impro.loopRecorder && state.impro.loopRecorder.state === 'recording') {
+                try { state.impro.loopRecorder.stop(); } catch (_) {}
+                state.impro.loopRecorder = null;
+                state.impro.isLoopRecording = false;
+                updateImproLoopStatus();
+            }
             if (state.impro.visualTimeout) {
                 clearTimeout(state.impro.visualTimeout);
                 state.impro.visualTimeout = null;
@@ -2495,6 +3001,11 @@
 
             updateImproAuraColor(space.color);
             updateImproKeyHighlights();
+
+            if (state.currentModule === 'impro') {
+                startImproBacking();
+                resumeImproLoops();
+            }
 
             if (announce) {
                 setImproStatus(`${space.emoji} ${space.name}: spiel frei und spür, wie es sich anfühlt.`);
@@ -2604,6 +3115,191 @@
             return `rgba(${r}, ${g}, ${b}, ${alpha})`;
         }
 
+        function initImproBackingTracks() {
+            if (Object.keys(state.impro.backingTracks).length) return;
+            improSpaces.forEach((space) => {
+                const audio = new Audio(`assets/audio/backing/${space.id}.mp3`);
+                audio.loop = true;
+                audio.preload = 'auto';
+                audio.volume = state.impro.backingVolume;
+                audio.addEventListener('canplaythrough', () => {
+                    state.impro.backingReady[space.id] = true;
+                    if (state.currentModule === 'impro' && state.impro.currentSpace === space.id) {
+                        startImproBacking();
+                    }
+                });
+                audio.addEventListener('error', () => {
+                    state.impro.backingReady[space.id] = false;
+                });
+                state.impro.backingTracks[space.id] = audio;
+            });
+        }
+
+        function playImproBackingTrack(spaceId) {
+            const audio = state.impro.backingTracks[spaceId];
+            if (!audio || !state.impro.backingReady[spaceId]) return false;
+            if (state.impro.activeBackingId && state.impro.activeBackingId !== spaceId) {
+                stopImproBackingAudio();
+            }
+            audio.volume = getImproBackingVolume();
+            audio.currentTime = 0;
+            audio.play().catch(() => {});
+            state.impro.activeBackingId = spaceId;
+            return true;
+        }
+
+        function stopImproBackingAudio() {
+            if (!state.impro.activeBackingId) return;
+            const audio = state.impro.backingTracks[state.impro.activeBackingId];
+            if (audio) {
+                audio.pause();
+                audio.currentTime = 0;
+            }
+            state.impro.activeBackingId = null;
+        }
+
+        function getImproBackingVolume() {
+            const base = state.impro.backingVolume || 0;
+            const intensity = state.impro.backingIntensity || 0;
+            const lift = 0.55 + intensity * 0.45;
+            return clampNumber(base * lift, 0, 1);
+        }
+
+        function updateImproBackingVolume() {
+            if (state.impro.activeBackingId) {
+                const audio = state.impro.backingTracks[state.impro.activeBackingId];
+                if (audio) audio.volume = getImproBackingVolume();
+            }
+        }
+
+        function updateImproBackingIntensity() {
+            const intensity = clampNumber((state.impro.bpm - 60) / 80, 0, 1);
+            state.impro.backingIntensity = intensity;
+            state.impro.backingGain = 0.008 + intensity * 0.01;
+            updateImproBackingVolume();
+        }
+
+        function updateImproLoopVolume() {
+            state.impro.loops.forEach((loop) => {
+                if (loop.audio) loop.audio.volume = state.impro.loopVolume;
+            });
+        }
+
+        function updateImproLoopStatus() {
+            if (!improUI.loopStatusEl) return;
+            if (typeof MediaRecorder === 'undefined') {
+                improUI.loopStatusEl.textContent = 'Loop-Aufnahme ist in diesem Browser nicht verfuegbar.';
+                updateImproLoopButton();
+                return;
+            }
+            if (state.impro.isLoopRecording) {
+                improUI.loopStatusEl.textContent = 'Loop nimmt auf...';
+                updateImproLoopButton();
+                return;
+            }
+            const count = state.impro.loops.length;
+            improUI.loopStatusEl.textContent = count === 0
+                ? 'Kein Loop aufgenommen.'
+                : `${count} Loop${count === 1 ? '' : 's'} aktiv.`;
+            updateImproLoopButton();
+            if (improUI.loopClearBtn) {
+                improUI.loopClearBtn.disabled = count === 0;
+            }
+        }
+
+        function updateImproLoopButton() {
+            if (!improUI.loopBtn) return;
+            if (state.impro.isLoopRecording) {
+                improUI.loopBtn.textContent = '⏺️ Aufnahme...';
+                improUI.loopBtn.disabled = true;
+            } else {
+                improUI.loopBtn.textContent = '🔁 Loop aufnehmen';
+                improUI.loopBtn.disabled = typeof MediaRecorder === 'undefined';
+            }
+        }
+
+        function startImproLoopRecording() {
+            if (state.impro.isLoopRecording) return;
+            if (!state.mediaStream) {
+                state.impro.pendingStart = true;
+                state.impro.pendingLoopStart = true;
+                document.getElementById('micModal').classList.add('active');
+                if (improUI.loopStatusEl) {
+                    improUI.loopStatusEl.textContent = 'Erst Mikrofon erlauben, dann nehmen wir den Loop auf.';
+                }
+                return;
+            }
+            if (typeof MediaRecorder === 'undefined') {
+                if (improUI.loopStatusEl) {
+                    improUI.loopStatusEl.textContent = 'Loop-Aufnahme ist hier nicht verfuegbar.';
+                }
+                return;
+            }
+            ensureImproListening(true);
+            state.impro.isLoopRecording = true;
+            updateImproLoopStatus();
+
+            const recorder = new MediaRecorder(state.mediaStream);
+            state.impro.loopRecorder = recorder;
+            state.impro.loopChunks = [];
+
+            recorder.ondataavailable = (event) => {
+                if (event.data.size > 0) state.impro.loopChunks.push(event.data);
+            };
+            recorder.onstop = () => {
+                const blob = new Blob(state.impro.loopChunks, { type: 'audio/webm' });
+                state.impro.loopChunks = [];
+                addImproLoop(blob);
+                state.impro.isLoopRecording = false;
+                state.impro.loopRecorder = null;
+                updateImproLoopStatus();
+            };
+
+            recorder.start();
+            if (state.impro.loopTimer) clearTimeout(state.impro.loopTimer);
+            state.impro.loopTimer = setTimeout(() => {
+                try { recorder.stop(); } catch (_) {}
+                state.impro.loopTimer = null;
+            }, state.impro.loopDurationMs);
+        }
+
+        function addImproLoop(blob) {
+            const url = URL.createObjectURL(blob);
+            const audio = new Audio(url);
+            audio.loop = true;
+            audio.volume = state.impro.loopVolume;
+            audio.play().catch(() => {});
+            const loop = { id: Date.now(), url, audio };
+            state.impro.loops.push(loop);
+            appState.progress.improMeadow.loopsRecorded = (appState.progress.improMeadow.loopsRecorded || 0) + 1;
+            state.gardenProgress += 3;
+            scheduleGardenSave();
+            saveAppState();
+            updateIslandView();
+            updateImproLoopStatus();
+        }
+
+        function clearImproLoops() {
+            state.impro.loops.forEach((loop) => {
+                if (loop.audio) loop.audio.pause();
+                if (loop.url) URL.revokeObjectURL(loop.url);
+            });
+            state.impro.loops = [];
+            updateImproLoopStatus();
+        }
+
+        function pauseImproLoops() {
+            state.impro.loops.forEach((loop) => {
+                if (loop.audio) loop.audio.pause();
+            });
+        }
+
+        function resumeImproLoops() {
+            state.impro.loops.forEach((loop) => {
+                if (loop.audio) loop.audio.play().catch(() => {});
+            });
+        }
+
         function ensureImproListening(userInitiated) {
             if (!state.audioContext) {
                 if (userInitiated) state.impro.pendingStart = true;
@@ -2691,6 +3387,7 @@
                     const avg = state.impro.tempoSamples.reduce((a, b) => a + b, 0) / state.impro.tempoSamples.length;
                     const bpm = clampNumber(Math.round(60000 / avg), 60, 140);
                     state.impro.bpm = bpm;
+                    updateImproBackingIntensity();
                 }
             }
             state.impro.lastNoteAt = now;
@@ -2769,10 +3466,21 @@
         }
 
         function startImproBacking() {
-            if (!state.audioContext || state.impro.isBacking) return;
+            if (!state.audioContext) return;
             if (state.audioContext.state === 'suspended') {
                 state.audioContext.resume().catch(() => {});
             }
+            const played = playImproBackingTrack(state.impro.currentSpace);
+            if (played) {
+                state.impro.isBacking = false;
+                if (state.impro.backingTimer) {
+                    clearTimeout(state.impro.backingTimer);
+                    state.impro.backingTimer = null;
+                }
+                return;
+            }
+            stopImproBackingAudio();
+            if (state.impro.isBacking) return;
             state.impro.isBacking = true;
             runImproBacking();
         }
@@ -2783,6 +3491,7 @@
                 clearTimeout(state.impro.backingTimer);
                 state.impro.backingTimer = null;
             }
+            stopImproBackingAudio();
         }
 
         function runImproBacking() {
@@ -2799,7 +3508,7 @@
                 osc.type = 'sine';
                 osc.frequency.setValueAtTime(220, when);
                 gain.gain.setValueAtTime(0.0001, when);
-                gain.gain.linearRampToValueAtTime(0.012, when + 0.04);
+                gain.gain.linearRampToValueAtTime(state.impro.backingGain, when + 0.04);
                 gain.gain.exponentialRampToValueAtTime(0.0001, when + 0.25);
                 osc.connect(gain);
                 gain.connect(ctx.destination);
@@ -3030,9 +3739,16 @@
         function scheduleGardenSave() {
             if (gardenSaveTimeout) return;
             gardenSaveTimeout = setTimeout(() => {
-                localStorage.setItem('klangreise_garden', state.gardenProgress);
+                syncGardenProgress();
                 gardenSaveTimeout = null;
             }, GARDEN_SAVE_MS);
+        }
+
+        function syncGardenProgress() {
+            localStorage.setItem('klangreise_garden', state.gardenProgress);
+            appState.garden.growthPoints = state.gardenProgress;
+            saveAppState();
+            updateIslandView();
         }
 
         // ==================== RECORDING ====================
@@ -3176,21 +3892,42 @@
         // ==================== EVENT HANDLERS ====================
         document.querySelectorAll('.nav-tab').forEach(tab => {
             tab.addEventListener('click', () => {
-                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-                document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-                
-                tab.classList.add('active');
-                document.getElementById(tab.dataset.screen).classList.add('active');
-                
-                if (tab.dataset.screen === 'garden') updateGardenView();
-                if (tab.dataset.screen === 'diary') updateDiaryView();
+                openScreen(tab.dataset.screen);
             });
         });
 
         document.getElementById('startBtn').addEventListener('click', () => {
-            document.querySelector('[data-screen="play"]').click();
-            document.getElementById('micModal').classList.add('active');
+            appState.user.introSeen = true;
+            saveAppState();
+            openScreen('island');
         });
+
+        document.querySelectorAll('.island-landmark').forEach((landmark) => {
+            const disabled = landmark.dataset.disabled === 'true';
+            if (disabled) {
+                landmark.classList.add('disabled');
+                return;
+            }
+            landmark.addEventListener('click', () => {
+                const screen = landmark.dataset.screen || 'play';
+                const module = landmark.dataset.module || null;
+                if (module) {
+                    openModule(module);
+                } else {
+                    openScreen(screen);
+                }
+            });
+        });
+
+        const islandGardenBtn = document.getElementById('islandGarden');
+        if (islandGardenBtn) {
+            islandGardenBtn.addEventListener('click', () => openScreen('garden'));
+        }
+
+        const compassBtn = document.getElementById('compassBtn');
+        if (compassBtn) {
+            compassBtn.addEventListener('click', () => openScreen('island'));
+        }
 
         document.getElementById('allowMicBtn').addEventListener('click', async () => {
             const success = await setupAudio();
@@ -3210,6 +3947,10 @@
                 if (state.currentModule === 'impro' && state.impro.pendingStart) {
                     state.impro.pendingStart = false;
                     enterImproMode();
+                    if (state.impro.pendingLoopStart) {
+                        state.impro.pendingLoopStart = false;
+                        startImproLoopRecording();
+                    }
                 }
             }
         });
@@ -3282,7 +4023,7 @@
         // ==================== INIT ====================
         window.addEventListener('beforeunload', () => {
             if (gardenSaveTimeout) {
-                localStorage.setItem('klangreise_garden', state.gardenProgress);
+                syncGardenProgress();
                 gardenSaveTimeout = null;
             }
         });
@@ -3291,7 +4032,11 @@
         setupModuleTabs();
         initEchoGame();
         initImproPlayground();
+        applyIslandTheme();
+        updateIslandView();
+        openScreen('island');
         updateDiaryView();
+        updateImproListenButton();
         
         // Random prompt on load
         document.getElementById('dailyPrompt').textContent = 
