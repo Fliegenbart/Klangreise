@@ -1155,6 +1155,216 @@
             100% { opacity: 0; transform: scale(1.08); }
         }
 
+        /* Akkord-Entdecker */
+        .chord-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 2rem;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chord-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .chord-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+        }
+
+        .chord-subtitle {
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .chord-status {
+            background: rgba(0, 0, 0, 0.18);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 1.2rem;
+            padding: 1rem 1.2rem;
+            color: var(--text-light);
+            line-height: 1.6;
+            margin: 1rem 0;
+            min-height: 3.4rem;
+        }
+
+        .chord-prompt {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            margin: 1rem 0 0.6rem;
+            font-size: 1rem;
+        }
+
+        .chord-notes {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .chord-note {
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 999px;
+            padding: 0.35rem 0.75rem;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1rem;
+        }
+
+        .chord-controls {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 1.2rem 0;
+        }
+
+        .chord-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 2rem;
+            padding: 0.9rem 1.4rem;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 500;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+        }
+
+        .chord-btn:hover {
+            transform: translateY(-1px);
+            background: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+        }
+
+        .chord-btn.primary {
+            background: linear-gradient(135deg, var(--accent-gold), var(--accent-warm));
+            border-color: transparent;
+            color: #1a1a2e;
+        }
+
+        .chord-visual {
+            position: relative;
+            background: rgba(10, 12, 24, 0.35);
+            border-radius: 1.6rem;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            min-height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 1rem 0 1.4rem;
+            overflow: hidden;
+        }
+
+        .chord-aura {
+            width: 130px;
+            height: 130px;
+            border-radius: 999px;
+            background: radial-gradient(circle, rgba(255, 217, 61, 0.78), rgba(255, 217, 61, 0.12));
+            box-shadow: 0 0 40px rgba(255, 217, 61, 0.35);
+            opacity: 0.25;
+            transform: scale(0.9);
+            transition: transform 0.25s ease, opacity 0.25s ease, filter 0.25s ease;
+        }
+
+        .chord-visual.active .chord-aura {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+
+        .chord-emoji-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+            gap: 0.6rem;
+            margin-top: 0.8rem;
+        }
+
+        .chord-emoji-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-radius: 1rem;
+            padding: 0.6rem 0.2rem;
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .chord-emoji-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 22px rgba(0, 0, 0, 0.25);
+        }
+
+        .chord-emoji-btn.suggested {
+            box-shadow: 0 0 0 2px rgba(255, 217, 61, 0.45);
+        }
+
+        .chord-piano-wrap {
+            background: rgba(0, 0, 0, 0.16);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 1.5rem;
+            padding: 1.25rem;
+        }
+
+        .chord-piano {
+            position: relative;
+            width: 100%;
+            max-width: 820px;
+            margin: 0 auto;
+            height: 180px;
+            user-select: none;
+        }
+
+        .chord-white-keys {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            gap: 6px;
+            padding: 6px;
+        }
+
+        .chord-key {
+            border-radius: 14px;
+            transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease, opacity 0.12s ease;
+            opacity: 0.65;
+        }
+
+        .chord-key.white {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(0, 0, 0, 0.2);
+        }
+
+        .chord-key.black {
+            position: absolute;
+            top: 6px;
+            height: 58%;
+            background: rgba(15, 16, 28, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 12px;
+            z-index: 2;
+            opacity: 0.5;
+        }
+
+        .chord-key.target {
+            opacity: 1;
+            box-shadow: 0 0 0 3px rgba(255, 217, 61, 0.28);
+        }
+
+        .chord-key.playing {
+            transform: translateY(-2px);
+            box-shadow: 0 0 0 4px rgba(107, 203, 119, 0.28), 0 12px 28px rgba(0, 0, 0, 0.25);
+        }
+
         /* Impro-Spielplatz */
         .impro-card {
             background: var(--card-bg);
@@ -1455,6 +1665,14 @@
                 height: 160px;
             }
 
+            .chord-card {
+                padding: 1.4rem;
+            }
+
+            .chord-piano {
+                height: 150px;
+            }
+
             .impro-card {
                 padding: 1.4rem;
             }
@@ -1525,10 +1743,10 @@
                     <div class="landmark-label">Echo-Höhlen</div>
                     <div class="landmark-badge" id="badgeEcho">Level 1</div>
                 </button>
-                <button class="island-landmark" style="right: 10%; top: 20%;" data-landmark="chords" data-screen="play" data-module="chords" data-disabled="true" disabled>
+                <button class="island-landmark" style="right: 10%; top: 20%;" data-landmark="chords" data-screen="play" data-module="chords">
                     <div class="landmark-icon">💎</div>
                     <div class="landmark-label">Kristall-Lagune</div>
-                    <div class="landmark-badge">Bald</div>
+                    <div class="landmark-badge" id="badgeChords">Schätze 0</div>
                 </button>
                 <button class="island-landmark" style="left: 14%; bottom: 16%;" data-landmark="impro" data-screen="play" data-module="impro">
                     <div class="landmark-icon">🌾</div>
@@ -1580,7 +1798,7 @@
             <div class="module-tabs" aria-label="Spielmodi">
                 <button class="module-tab active" data-module="free">Frei</button>
                 <button class="module-tab" data-module="echo">Echo</button>
-                <button class="module-tab" data-module="chords" disabled>Akkorde</button>
+                <button class="module-tab" data-module="chords">Akkorde</button>
                 <button class="module-tab" data-module="stories" disabled>Geschichten</button>
                 <button class="module-tab" data-module="impro">Impro</button>
                 <button class="module-tab" data-module="feelings" disabled>Gefühle</button>
@@ -1636,6 +1854,41 @@
                     <div class="echo-piano-wrap">
                         <div class="echo-piano" id="echoPiano" aria-label="Klaviatur (vereinfachte Anzeige)"></div>
                     </div>
+                </div>
+            </div>
+
+            <!-- Chord Explorer -->
+            <div class="module-screen" id="module-chords">
+                <div class="chord-card">
+                    <div class="chord-header">
+                        <div>
+                            <div class="chord-title">Kristall-Lagune</div>
+                            <div class="chord-subtitle">Spiele mehrere Tasten zusammen und spüre die Farbe des Klangs.</div>
+                        </div>
+                    </div>
+
+                    <div class="chord-status" id="chordStatus">Tippe auf „Zuhören“ und spiel dann zwei bis drei Tasten zusammen.</div>
+
+                    <div class="chord-prompt">
+                        <span id="chordPromptText">Spiel mal diese Tasten:</span>
+                        <div class="chord-notes" id="chordNoteList"></div>
+                    </div>
+
+                    <div class="chord-controls">
+                        <button class="chord-btn primary" id="chordListenBtn">🎤 Zuhören</button>
+                        <button class="chord-btn" id="chordNextBtn">🎲 Neue Idee</button>
+                    </div>
+
+                    <div class="chord-visual" id="chordVisual">
+                        <div class="chord-aura" id="chordAura"></div>
+                    </div>
+
+                    <div class="chord-piano-wrap">
+                        <div class="chord-piano" id="chordPiano" aria-label="Klaviatur (Akkorde)"></div>
+                    </div>
+
+                    <div class="chord-status" id="chordFeelingPrompt">Wie fühlt sich das für dich an?</div>
+                    <div class="chord-emoji-grid" id="chordEmojiGrid"></div>
                 </div>
             </div>
 
@@ -1960,6 +2213,20 @@
                 loopDurationMs: 4000,
                 pendingLoopStart: false
             },
+            chord: {
+                promptIndex: 0,
+                prompt: null,
+                active: false,
+                pendingStart: false,
+                windowMs: 800,
+                windowTimeout: null,
+                visualTimeout: null,
+                timeouts: [],
+                collected: new Map(),
+                lastDetectedAt: 0,
+                pendingChord: null,
+                history: safeJsonParse(localStorage.getItem('klangreise_chords') || '[]', [])
+            },
             pitchTracker: {
                 stableFramesNeeded: 4,
                 minMsBetweenNotes: 220,
@@ -2048,6 +2315,34 @@
                 vibe: 'mutig und spannend',
                 emoji: '🔥'
             }
+        ];
+
+        const chordExplorations = [
+            { id: 'bright', notes: ['C', 'E', 'G'], mood: 'fröhlich', color: '#ffd93d', type: 'major' },
+            { id: 'soft', notes: ['C', 'Eb', 'G'], mood: 'weich', color: '#4d96ff', type: 'minor' },
+            { id: 'mystery', notes: ['C', 'Eb', 'Gb'], mood: 'spannend', color: '#9b5de5', type: 'diminished' },
+            { id: 'floating', notes: ['C', 'E', 'G#'], mood: 'schwebend', color: '#ff6b6b', type: 'augmented' },
+            { id: 'open', notes: ['C', 'F', 'G'], mood: 'offen', color: '#6bcb77', type: 'sus4' },
+            { id: 'jazzy', notes: ['C', 'E', 'G', 'B'], mood: 'jazzig', color: '#ffd93d', type: 'dom7' }
+        ];
+
+        const chordEmotionMap = {
+            major: ['😊', '☀️', '🚀', '🎉'],
+            minor: ['😢', '🌙', '☁️', '🕯️'],
+            diminished: ['😱', '🕵️‍♂️', '🌋', '🌀'],
+            augmented: ['✨', '🎈', '🚀', '💫'],
+            sus4: ['🤔', '✨', '🪁', '🌤️'],
+            dom7: ['😎', '🎷', '✨', '🌀'],
+            mystery: ['🤔', '✨', '🔮', '🪄']
+        };
+
+        const chordPatterns = [
+            { id: 'major', intervals: [0, 4, 7], mood: 'klar und hell', color: '#ffd93d' },
+            { id: 'minor', intervals: [0, 3, 7], mood: 'weich und tief', color: '#4d96ff' },
+            { id: 'diminished', intervals: [0, 3, 6], mood: 'spannend', color: '#9b5de5' },
+            { id: 'augmented', intervals: [0, 4, 8], mood: 'schwebend', color: '#ff6b6b' },
+            { id: 'sus4', intervals: [0, 5, 7], mood: 'offen', color: '#6bcb77' },
+            { id: 'dom7', intervals: [0, 4, 7, 10], mood: 'jazzig', color: '#ffd93d' }
         ];
 
         function normalizeNoteName(noteName) {
@@ -2201,12 +2496,16 @@
 
         function updateIslandView() {
             const echoBadge = document.getElementById('badgeEcho');
+            const chordBadge = document.getElementById('badgeChords');
             const improBadge = document.getElementById('badgeImpro');
             const gardenBadge = document.getElementById('badgeGarden');
 
             if (echoBadge) {
                 const level = appState.progress.echoCave.currentLevel || state.echo.level || 1;
                 echoBadge.textContent = `Level ${level}`;
+            }
+            if (chordBadge) {
+                chordBadge.textContent = `Schätze ${appState.progress.chordLagoon.totalChords || 0}`;
             }
             if (improBadge) {
                 improBadge.textContent = `Loops ${appState.progress.improMeadow.loopsRecorded || 0}`;
@@ -2292,6 +2591,12 @@
                 enterEchoMode();
             } else {
                 exitEchoMode();
+            }
+
+            if (moduleName === 'chords') {
+                enterChordMode();
+            } else {
+                exitChordMode();
             }
 
             if (moduleName === 'impro') {
@@ -2886,6 +3191,401 @@
 
                 setEchoTarget(state.echo.expected[state.echo.step]);
             }
+        }
+
+        // ==================== CHORD EXPLORER ====================
+        const chordUI = {
+            statusEl: null,
+            promptTextEl: null,
+            noteListEl: null,
+            visualEl: null,
+            auraEl: null,
+            pianoEl: null,
+            whiteContainer: null,
+            feelingPromptEl: null,
+            emojiGridEl: null,
+            listenBtn: null,
+            nextBtn: null
+        };
+
+        function initChordExplorer() {
+            chordUI.statusEl = document.getElementById('chordStatus');
+            chordUI.promptTextEl = document.getElementById('chordPromptText');
+            chordUI.noteListEl = document.getElementById('chordNoteList');
+            chordUI.visualEl = document.getElementById('chordVisual');
+            chordUI.auraEl = document.getElementById('chordAura');
+            chordUI.pianoEl = document.getElementById('chordPiano');
+            chordUI.feelingPromptEl = document.getElementById('chordFeelingPrompt');
+            chordUI.emojiGridEl = document.getElementById('chordEmojiGrid');
+            chordUI.listenBtn = document.getElementById('chordListenBtn');
+            chordUI.nextBtn = document.getElementById('chordNextBtn');
+
+            renderChordPiano();
+            const startIndex = Math.floor(Math.random() * chordExplorations.length);
+            setChordPrompt(startIndex, { announce: false });
+            renderChordEmojis('mystery');
+            updateChordListenButton();
+
+            if (chordUI.listenBtn) {
+                chordUI.listenBtn.addEventListener('click', () => {
+                    ensureChordListening(true);
+                });
+            }
+
+            if (chordUI.nextBtn) {
+                chordUI.nextBtn.addEventListener('click', () => {
+                    const nextIndex = (state.chord.promptIndex + 1) % chordExplorations.length;
+                    setChordPrompt(nextIndex, { announce: true });
+                });
+            }
+
+            if (chordUI.emojiGridEl) {
+                chordUI.emojiGridEl.addEventListener('click', (event) => {
+                    const btn = event.target.closest('button[data-emoji]');
+                    if (!btn) return;
+                    handleChordEmotionSelect(btn.dataset.emoji);
+                });
+            }
+
+            window.addEventListener('resize', layoutChordBlackKeys, { passive: true });
+        }
+
+        function enterChordMode() {
+            clearChordWindow();
+            clearChordTimeouts();
+            if (!state.chord.prompt) {
+                setChordPrompt(0, { announce: false });
+            }
+            if (state.audioContext && state.isListening) {
+                state.chord.active = true;
+                setChordStatus('Spiel zwei bis drei Tasten zusammen. Ich höre zu.');
+            } else {
+                state.chord.active = false;
+                setChordStatus('Tippe auf „Zuhören“, damit ich deinen Klang hören kann.');
+            }
+            updateChordListenButton();
+        }
+
+        function exitChordMode() {
+            state.chord.active = false;
+            state.chord.pendingStart = false;
+            clearChordWindow();
+            clearChordTimeouts();
+            state.chord.pendingChord = null;
+            if (state.chord.visualTimeout) {
+                clearTimeout(state.chord.visualTimeout);
+                state.chord.visualTimeout = null;
+            }
+            if (chordUI.visualEl) chordUI.visualEl.classList.remove('active');
+            if (chordUI.pianoEl) {
+                chordUI.pianoEl.querySelectorAll('.chord-key.playing').forEach(k => k.classList.remove('playing'));
+            }
+        }
+
+        function setChordStatus(text) {
+            if (!chordUI.statusEl) return;
+            chordUI.statusEl.textContent = text;
+        }
+
+        function updateChordListenButton() {
+            if (!chordUI.listenBtn) return;
+            if (!state.audioContext) {
+                chordUI.listenBtn.textContent = '🎤 Zuhören';
+                return;
+            }
+            chordUI.listenBtn.textContent = state.isListening ? '🎧 Ich höre' : '🎤 Zuhören';
+        }
+
+        function ensureChordListening(userInitiated) {
+            if (!state.audioContext) {
+                if (userInitiated) state.chord.pendingStart = true;
+                document.getElementById('micModal').classList.add('active');
+                updateChordListenButton();
+                return;
+            }
+            state.chord.pendingStart = false;
+            if (state.audioContext.state === 'suspended') {
+                state.audioContext.resume().catch(() => {});
+            }
+            if (!state.isListening && state.analyser) {
+                state.isListening = true;
+                const micBtn = document.getElementById('micBtn');
+                if (micBtn) micBtn.classList.add('listening');
+                startNoteDetection();
+            }
+            state.chord.active = true;
+            setChordStatus('Spiel zwei bis drei Tasten zusammen und wähle ein Gefühl.');
+            updateChordListenButton();
+        }
+
+        function setChordPrompt(index, { announce }) {
+            const safeIndex = clampNumber(index, 0, chordExplorations.length - 1);
+            state.chord.promptIndex = safeIndex;
+            state.chord.prompt = chordExplorations[safeIndex];
+            applyChordPrompt();
+            if (announce) {
+                setChordStatus('Neue Klangfarbe. Spiel die leuchtenden Tasten zusammen.');
+            }
+        }
+
+        function applyChordPrompt() {
+            const prompt = state.chord.prompt || chordExplorations[0];
+            if (chordUI.noteListEl) {
+                chordUI.noteListEl.innerHTML = '';
+                prompt.notes.forEach((note) => {
+                    const chip = document.createElement('span');
+                    chip.className = 'chord-note';
+                    chip.textContent = note;
+                    chordUI.noteListEl.appendChild(chip);
+                });
+            }
+            setChordTargets(prompt.notes);
+            updateChordAura(prompt.color || '#ffd93d');
+            renderChordEmojis(prompt.type || 'mystery');
+            state.chord.pendingChord = null;
+        }
+
+        function renderChordPiano() {
+            if (!chordUI.pianoEl) return;
+            chordUI.pianoEl.innerHTML = '';
+            const whiteWrap = document.createElement('div');
+            whiteWrap.className = 'chord-white-keys';
+            chordUI.whiteContainer = whiteWrap;
+            chordUI.pianoEl.appendChild(whiteWrap);
+
+            echoWhiteNotes.forEach((n) => {
+                const key = document.createElement('div');
+                key.className = 'chord-key white';
+                key.dataset.note = n;
+                key.setAttribute('aria-label', `Taste ${n}`);
+                whiteWrap.appendChild(key);
+            });
+
+            const blackNotes = ["C#", "D#", "F#", "G#", "A#"];
+            blackNotes.forEach((n) => {
+                const key = document.createElement('div');
+                key.className = 'chord-key black';
+                key.dataset.note = n;
+                key.setAttribute('aria-label', `Taste ${n}`);
+                chordUI.pianoEl.appendChild(key);
+            });
+
+            layoutChordBlackKeys();
+        }
+
+        function layoutChordBlackKeys() {
+            if (!chordUI.pianoEl || !chordUI.whiteContainer) return;
+            const pianoRect = chordUI.pianoEl.getBoundingClientRect();
+            const whiteKeys = Array.from(chordUI.whiteContainer.querySelectorAll('.chord-key.white'));
+            if (!pianoRect.width || whiteKeys.length < 7) return;
+
+            const blackMap = {
+                "C#": ["C", "D"],
+                "D#": ["D", "E"],
+                "F#": ["F", "G"],
+                "G#": ["G", "A"],
+                "A#": ["A", "B"]
+            };
+
+            const getWhiteByNote = (name) => whiteKeys[echoWhiteNotes.indexOf(name)];
+            const firstWhiteRect = whiteKeys[0].getBoundingClientRect();
+            const whiteW = firstWhiteRect.width;
+            const blackW = Math.max(24, Math.floor(whiteW * 0.62));
+
+            chordUI.pianoEl.querySelectorAll('.chord-key.black').forEach((blackEl) => {
+                const pair = blackMap[blackEl.dataset.note];
+                if (!pair) return;
+                const leftWhite = getWhiteByNote(pair[0]);
+                const rightWhite = getWhiteByNote(pair[1]);
+                if (!leftWhite || !rightWhite) return;
+                const leftRect = leftWhite.getBoundingClientRect();
+                const rightRect = rightWhite.getBoundingClientRect();
+                const center = (leftRect.right + rightRect.left) / 2 - pianoRect.left;
+                blackEl.style.width = `${blackW}px`;
+                blackEl.style.left = `${Math.round(center - blackW / 2)}px`;
+            });
+        }
+
+        function setChordTargets(notes) {
+            if (!chordUI.pianoEl) return;
+            chordUI.pianoEl.querySelectorAll('.chord-key.target').forEach(k => k.classList.remove('target'));
+            (notes || []).forEach((note) => {
+                const normalized = normalizeNoteName(note);
+                const key = chordUI.pianoEl.querySelector(`.chord-key[data-note="${normalized}"]`);
+                if (key) key.classList.add('target');
+            });
+        }
+
+        function highlightChordKey(noteName, className, holdMs) {
+            if (!chordUI.pianoEl) return;
+            const normalized = normalizeNoteName(noteName);
+            const key = chordUI.pianoEl.querySelector(`.chord-key[data-note="${normalized}"]`);
+            if (!key) return;
+            key.classList.add(className);
+            const t = setTimeout(() => key.classList.remove(className), holdMs || 260);
+            state.chord.timeouts.push(t);
+        }
+
+        function updateChordAura(color) {
+            if (!chordUI.auraEl) return;
+            const core = hexToRgba(color, 0.78);
+            const edge = hexToRgba(color, 0.12);
+            chordUI.auraEl.style.background = `radial-gradient(circle, ${core}, ${edge})`;
+            chordUI.auraEl.style.boxShadow = `0 0 40px ${hexToRgba(color, 0.35)}`;
+        }
+
+        function pulseChordAura(color) {
+            if (!chordUI.visualEl) return;
+            updateChordAura(color);
+            chordUI.visualEl.classList.add('active');
+            if (state.chord.visualTimeout) {
+                clearTimeout(state.chord.visualTimeout);
+            }
+            state.chord.visualTimeout = setTimeout(() => {
+                if (state.currentModule !== 'chords') return;
+                chordUI.visualEl.classList.remove('active');
+            }, 760);
+        }
+
+        function renderChordEmojis(typeId) {
+            if (!chordUI.emojiGridEl) return;
+            const emojis = chordEmotionMap[typeId] || chordEmotionMap.mystery || ['✨', '🌙', '😊'];
+            chordUI.emojiGridEl.innerHTML = '';
+            emojis.forEach((emoji, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'chord-emoji-btn';
+                if (index < 3) btn.classList.add('suggested');
+                btn.dataset.emoji = emoji;
+                btn.setAttribute('aria-label', `Gefühl ${emoji}`);
+                btn.textContent = emoji;
+                chordUI.emojiGridEl.appendChild(btn);
+            });
+        }
+
+        function clearChordWindow() {
+            if (state.chord.windowTimeout) {
+                clearTimeout(state.chord.windowTimeout);
+                state.chord.windowTimeout = null;
+            }
+            state.chord.collected.clear();
+        }
+
+        function clearChordTimeouts() {
+            if (!state.chord.timeouts.length) return;
+            state.chord.timeouts.forEach(clearTimeout);
+            state.chord.timeouts = [];
+        }
+
+        function detectChordType(pitchClasses) {
+            const unique = Array.from(new Set(pitchClasses)).sort((a, b) => a - b);
+            if (unique.length < 2) return null;
+            for (const root of unique) {
+                const intervals = unique
+                    .map(pc => (pc - root + 12) % 12)
+                    .sort((a, b) => a - b);
+                for (const pattern of chordPatterns) {
+                    const matches = pattern.intervals.every(i => intervals.includes(i));
+                    if (matches) {
+                        return { ...pattern, root };
+                    }
+                }
+            }
+            return null;
+        }
+
+        function finalizeChordWindow() {
+            state.chord.windowTimeout = null;
+            const notes = Array.from(state.chord.collected.values());
+            state.chord.collected.clear();
+            if (!notes.length) return;
+
+            const pitchClasses = notes.map(n => noteNameToPitchClass(n.name)).filter(pc => pc >= 0);
+            const unique = Array.from(new Set(pitchClasses));
+            if (unique.length < 2) {
+                setChordStatus('Spiel noch eine Taste dazu, damit ich die Farbe hören kann.');
+                return;
+            }
+
+            const detected = detectChordType(unique);
+            const prompt = state.chord.prompt || chordExplorations[0];
+            const color = detected?.color || prompt.color || '#ffd93d';
+            const typeId = detected?.id || prompt.type || 'mystery';
+            pulseChordAura(color);
+            renderChordEmojis(typeId);
+
+            state.chord.pendingChord = {
+                timestamp: Date.now(),
+                notes: notes.map(n => n.full || n.name),
+                pitchClasses: unique,
+                detectedType: detected?.id || null,
+                mood: detected?.mood || prompt.mood || 'besonders',
+                color: color,
+                promptId: prompt.id || null
+            };
+
+            if (detected) {
+                setChordStatus(`Das klingt ${detected.mood}. Wie fühlt sich das für dich an?`);
+            } else {
+                setChordStatus('Spannend! Wie fühlt sich das für dich an?');
+            }
+        }
+
+        function onChordStableNote(note) {
+            if (state.currentModule !== 'chords') return;
+            if (!state.chord.active) return;
+            if (!state.isListening) return;
+            if (!note || typeof note.frequency !== 'number') return;
+
+            const pc = noteNameToPitchClass(note.name);
+            if (pc < 0) return;
+            state.chord.lastDetectedAt = performance.now();
+
+            if (!state.chord.windowTimeout) {
+                clearChordWindow();
+                state.chord.pendingChord = null;
+                setChordStatus('Ich höre... spiel noch eine Taste dazu.');
+                state.chord.windowTimeout = setTimeout(finalizeChordWindow, state.chord.windowMs);
+            }
+
+            state.chord.collected.set(pc, note);
+            highlightChordKey(note.name, 'playing', 260);
+        }
+
+        function handleChordEmotionSelect(emoji) {
+            const prompt = state.chord.prompt || chordExplorations[0];
+            if (!state.chord.pendingChord) {
+                setChordStatus('Spiel erst einen Klang, dann wähle ein Gefühl.');
+                return;
+            }
+            const entry = {
+                id: Date.now(),
+                timestamp: Date.now(),
+                notes: state.chord.pendingChord.notes || prompt.notes,
+                detectedType: state.chord.pendingChord.detectedType || prompt.type || null,
+                userEmotion: emoji,
+                colorContext: state.chord.pendingChord.color || prompt.color || '#ffd93d',
+                label: '',
+                promptId: state.chord.pendingChord.promptId || prompt.id || null
+            };
+            state.chord.history.unshift(entry);
+            state.chord.history = state.chord.history.slice(0, 60);
+            try {
+                localStorage.setItem('klangreise_chords', JSON.stringify(state.chord.history));
+            } catch (err) {
+                console.warn('Could not save chord entries:', err);
+            }
+
+            appState.progress.chordLagoon.totalChords = (appState.progress.chordLagoon.totalChords || 0) + 1;
+            if (!appState.progress.chordLagoon.discoveredEmotions.includes(emoji)) {
+                appState.progress.chordLagoon.discoveredEmotions.push(emoji);
+            }
+            state.gardenProgress += 4;
+            scheduleGardenSave();
+            saveAppState();
+            updateIslandView();
+
+            state.chord.pendingChord = null;
+            setChordStatus(`Wundervoll! Dein Gefühl ${emoji} gehört jetzt zu diesem Klang.`);
         }
 
         // ==================== IMPRO PLAYGROUND ====================
@@ -3804,6 +4504,7 @@
 
             // Route to the currently active module(s).
             onEchoStableNote(note);
+            onChordStableNote(note);
             onImproStableNote(note);
         }
 
@@ -4038,11 +4739,16 @@
                 startNoteDetection();
                 setupVisualization();
                 updateEchoControls();
+                updateChordListenButton();
                 updateImproListenButton();
 
                 if (state.currentModule === 'echo' && state.echo.pendingStart) {
                     state.echo.pendingStart = false;
                     startEchoRound({ replay: false });
+                }
+                if (state.currentModule === 'chords' && state.chord.pendingStart) {
+                    state.chord.pendingStart = false;
+                    ensureChordListening(false);
                 }
                 if (state.currentModule === 'impro' && state.impro.pendingStart) {
                     state.impro.pendingStart = false;
@@ -4068,6 +4774,7 @@
                 startNoteDetection();
             }
             updateEchoControls();
+            updateChordListenButton();
             updateImproListenButton();
         });
 
@@ -4131,11 +4838,13 @@
         createBackgroundParticles();
         setupModuleTabs();
         initEchoGame();
+        initChordExplorer();
         initImproPlayground();
         applyIslandTheme();
         updateIslandView();
         openScreen('island');
         updateDiaryView();
+        updateChordListenButton();
         updateImproListenButton();
         
         // Random prompt on load
