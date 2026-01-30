@@ -971,6 +971,233 @@
             100% { opacity: 0; transform: scale(1.08); }
         }
 
+        /* Impro-Spielplatz */
+        .impro-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 2rem;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .impro-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .impro-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+        }
+
+        .impro-subtitle {
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .impro-worlds {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0.8rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .impro-world {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 1.2rem;
+            padding: 1rem 1.1rem;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+
+        .impro-world strong {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.15rem;
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+
+        .impro-world span {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .impro-world.sun { --impro-color: #ffd93d; }
+        .impro-world.moon { --impro-color: #4d96ff; }
+        .impro-world.adventure { --impro-color: #9b5de5; }
+
+        .impro-world.active {
+            border-color: var(--impro-color);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+            transform: translateY(-2px);
+        }
+
+        .impro-status {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 1.2rem;
+            padding: 1rem 1.2rem;
+            min-height: 3.4rem;
+            line-height: 1.6;
+            margin-bottom: 1.4rem;
+        }
+
+        .impro-visual {
+            position: relative;
+            background: rgba(10, 12, 24, 0.35);
+            border-radius: 1.6rem;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            min-height: 160px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.4rem;
+            overflow: hidden;
+        }
+
+        .impro-aura {
+            width: 120px;
+            height: 120px;
+            border-radius: 999px;
+            background: radial-gradient(circle, rgba(255, 217, 61, 0.75), rgba(255, 217, 61, 0.1));
+            box-shadow: 0 0 40px rgba(255, 217, 61, 0.35);
+            opacity: 0.3;
+            transform: scale(0.9);
+            transition: transform 0.25s ease, opacity 0.25s ease, filter 0.25s ease;
+        }
+
+        .impro-visual.active .impro-aura {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+
+        .impro-visual.contrast .impro-aura {
+            background: radial-gradient(circle, rgba(255, 107, 255, 0.85), rgba(255, 107, 255, 0.1));
+            box-shadow: 0 0 40px rgba(255, 107, 255, 0.4);
+            filter: saturate(130%);
+        }
+
+        .impro-visual.soft .impro-aura {
+            opacity: 0.15;
+            transform: scale(0.85);
+        }
+
+        .impro-piano-wrap {
+            background: rgba(0, 0, 0, 0.16);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 1.5rem;
+            padding: 1.25rem;
+        }
+
+        .impro-piano {
+            position: relative;
+            width: 100%;
+            max-width: 820px;
+            margin: 0 auto;
+            height: 190px;
+            user-select: none;
+            --impro-color: #ffd93d;
+            --impro-glow: rgba(255, 217, 61, 0.18);
+        }
+
+        .impro-white-keys {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            gap: 6px;
+            padding: 6px;
+        }
+
+        .impro-key {
+            border-radius: 14px;
+            transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease, opacity 0.12s ease;
+            opacity: 0.5;
+        }
+
+        .impro-key.allowed {
+            opacity: 1;
+            box-shadow: 0 0 0 2px var(--impro-glow);
+        }
+
+        .impro-key.white {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid rgba(0, 0, 0, 0.2);
+        }
+
+        .impro-key.black {
+            position: absolute;
+            top: 6px;
+            height: 58%;
+            background: rgba(15, 16, 28, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 12px;
+            z-index: 2;
+            opacity: 0.4;
+        }
+
+        .impro-key.allowed.black {
+            opacity: 0.9;
+        }
+
+        .impro-key.playing {
+            transform: translateY(-2px);
+            box-shadow: 0 0 0 4px rgba(107, 203, 119, 0.28), 0 12px 28px rgba(0, 0, 0, 0.25);
+        }
+
+        .impro-key.playing.white {
+            background: rgba(107, 203, 119, 0.92);
+        }
+
+        .impro-key.playing.black {
+            background: rgba(107, 203, 119, 0.85);
+        }
+
+        .impro-key.contrast {
+            box-shadow: 0 0 0 4px rgba(255, 107, 255, 0.28), 0 12px 28px rgba(0, 0, 0, 0.25);
+        }
+
+        .impro-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            justify-content: center;
+            margin-top: 1.3rem;
+        }
+
+        .impro-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 2rem;
+            padding: 0.9rem 1.4rem;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 500;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+        }
+
+        .impro-btn:hover {
+            transform: translateY(-1px);
+            background: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+        }
+
+        .impro-btn.primary {
+            background: linear-gradient(135deg, var(--accent-gold), var(--accent-warm));
+            border-color: transparent;
+            color: #1a1a2e;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .app-container {
@@ -1000,6 +1227,14 @@
             }
 
             .echo-piano {
+                height: 160px;
+            }
+
+            .impro-card {
+                padding: 1.4rem;
+            }
+
+            .impro-piano {
                 height: 160px;
             }
         }
@@ -1066,7 +1301,7 @@
                 <button class="module-tab" data-module="echo">Echo</button>
                 <button class="module-tab" data-module="chords" disabled>Akkorde</button>
                 <button class="module-tab" data-module="stories" disabled>Geschichten</button>
-                <button class="module-tab" data-module="impro" disabled>Impro</button>
+                <button class="module-tab" data-module="impro">Impro</button>
                 <button class="module-tab" data-module="feelings" disabled>Gefühle</button>
             </div>
 
@@ -1119,6 +1354,48 @@
 
                     <div class="echo-piano-wrap">
                         <div class="echo-piano" id="echoPiano" aria-label="Klaviatur (vereinfachte Anzeige)"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Impro Playground -->
+            <div class="module-screen" id="module-impro">
+                <div class="impro-card">
+                    <div class="impro-header">
+                        <div>
+                            <div class="impro-title">Impro-Spielplatz</div>
+                            <div class="impro-subtitle">Hier gibt es keine falschen Noten. Spiel, wie es sich gut anfühlt.</div>
+                        </div>
+                    </div>
+
+                    <div class="impro-worlds" id="improWorlds">
+                        <div class="impro-world sun active" data-space="sun">
+                            <strong>☀️ Sonnengarten</strong>
+                            <span>Leicht, hell, voller Schmetterlinge.</span>
+                        </div>
+                        <div class="impro-world moon" data-space="moon">
+                            <strong>🌙 Mondsee</strong>
+                            <span>Tiefblau, ruhig, weit.</span>
+                        </div>
+                        <div class="impro-world adventure" data-space="adventure">
+                            <strong>🔥 Abenteuer-Fels</strong>
+                            <span>Spannend, funkelnd, mutig.</span>
+                        </div>
+                    </div>
+
+                    <div class="impro-status" id="improStatus">Wähle eine Klangwiese und fang einfach an.</div>
+
+                    <div class="impro-visual soft" id="improVisual">
+                        <div class="impro-aura" id="improAura"></div>
+                    </div>
+
+                    <div class="impro-piano-wrap">
+                        <div class="impro-piano" id="improPiano" aria-label="Klaviatur (safe-space)"></div>
+                    </div>
+
+                    <div class="impro-controls">
+                        <button class="impro-btn primary" id="improListenBtn">🎤 Zuhören</button>
+                        <button class="impro-btn" id="improResponseBtn">🌬️ Antwort spielen</button>
                     </div>
                 </div>
             </div>
@@ -1236,6 +1513,22 @@
             }
         }
 
+        function loadImproPrefs() {
+            const fallback = { space: 'sun' };
+            const parsed = safeJsonParse(localStorage.getItem('klangreise_impro') || 'null', null);
+            if (!parsed || typeof parsed !== 'object') return fallback;
+            if (typeof parsed.space !== 'string') return fallback;
+            return { space: parsed.space };
+        }
+
+        function saveImproPrefs(prefs) {
+            try {
+                localStorage.setItem('klangreise_impro', JSON.stringify(prefs));
+            } catch (err) {
+                console.warn('Could not save impro prefs:', err);
+            }
+        }
+
         // ==================== APP STATE ====================
         const state = {
             isListening: false,
@@ -1270,6 +1563,22 @@
                 lastHintStep: -1,
                 heardRecently: null,
                 lastRoundId: 0
+            },
+            improPrefs: loadImproPrefs(),
+            impro: {
+                currentSpace: 'sun',
+                currentScale: 'pentatonic_major',
+                bpm: 90,
+                tempoSamples: [],
+                lastNoteAt: 0,
+                lastResponseAt: 0,
+                callTimeout: null,
+                backingTimer: null,
+                isBacking: false,
+                responseEnabled: true,
+                pendingStart: false,
+                timeouts: [],
+                visualTimeout: null
             },
             pitchTracker: {
                 stableFramesNeeded: 4,
@@ -1326,6 +1635,39 @@
             { id: 'entchen', notes: ["C", "D", "E", "F"] },      // Alle meine Entchen (Anfang)
             { id: 'twinkle', notes: ["C", "C", "G", "G"] },      // Twinkle (Anfang)
             { id: 'mary', notes: ["E", "D", "C", "D"] }          // Mary had a little lamb (Motiv)
+        ];
+
+        const improScales = {
+            pentatonic_major: [0, 2, 4, 7, 9], // C, D, E, G, A
+            moon_minor: [0, 3, 5, 7, 10],      // C, Eb, F, G, Bb
+            blues: [0, 3, 5, 6, 7, 10]         // C, Eb, F, Gb, G, Bb
+        };
+
+        const improSpaces = [
+            {
+                id: 'sun',
+                name: 'Sonnengarten',
+                scale: 'pentatonic_major',
+                color: '#ffd93d',
+                vibe: 'hell und fröhlich',
+                emoji: '🦋'
+            },
+            {
+                id: 'moon',
+                name: 'Mondsee',
+                scale: 'moon_minor',
+                color: '#4d96ff',
+                vibe: 'ruhig und weit',
+                emoji: '🌙'
+            },
+            {
+                id: 'adventure',
+                name: 'Abenteuer-Fels',
+                scale: 'blues',
+                color: '#9b5de5',
+                vibe: 'mutig und spannend',
+                emoji: '🔥'
+            }
         ];
 
         function normalizeNoteName(noteName) {
@@ -1469,6 +1811,12 @@
                 enterEchoMode();
             } else {
                 exitEchoMode();
+            }
+
+            if (moduleName === 'impro') {
+                enterImproMode();
+            } else {
+                exitImproMode();
             }
 
             if (moduleName === 'free' && state.audioContext) {
@@ -2046,6 +2394,423 @@
             }
         }
 
+        // ==================== IMPRO PLAYGROUND ====================
+        const improUI = {
+            worldsEl: null,
+            statusEl: null,
+            visualEl: null,
+            auraEl: null,
+            pianoEl: null,
+            whiteContainer: null,
+            listenBtn: null,
+            responseBtn: null
+        };
+
+        function initImproPlayground() {
+            improUI.worldsEl = document.getElementById('improWorlds');
+            improUI.statusEl = document.getElementById('improStatus');
+            improUI.visualEl = document.getElementById('improVisual');
+            improUI.auraEl = document.getElementById('improAura');
+            improUI.pianoEl = document.getElementById('improPiano');
+            improUI.listenBtn = document.getElementById('improListenBtn');
+            improUI.responseBtn = document.getElementById('improResponseBtn');
+
+            state.impro.currentSpace = state.improPrefs.space || 'sun';
+            applyImproSpace(state.impro.currentSpace, { announce: false });
+            renderImproPiano();
+
+            if (improUI.worldsEl) {
+                improUI.worldsEl.querySelectorAll('.impro-world').forEach((card) => {
+                    card.addEventListener('click', () => {
+                        applyImproSpace(card.dataset.space, { announce: true });
+                    });
+                });
+            }
+
+            if (improUI.listenBtn) {
+                improUI.listenBtn.addEventListener('click', () => {
+                    ensureImproListening(true);
+                });
+            }
+
+            if (improUI.responseBtn) {
+                improUI.responseBtn.addEventListener('click', () => {
+                    if (state.currentModule !== 'impro') return;
+                    playImproResponse(true);
+                });
+            }
+
+            window.addEventListener('resize', layoutImproBlackKeys, { passive: true });
+        }
+
+        function enterImproMode() {
+            applyImproSpace(state.improPrefs.space || state.impro.currentSpace || 'sun', { announce: false });
+            ensureImproListening(true);
+            startImproBacking();
+            if (state.audioContext) {
+                setImproStatus('Spiel los. Die leuchtenden Tasten klingen immer gut zusammen.');
+            } else {
+                setImproStatus('Tippe auf „Zuhören“, damit ich dich hören kann.');
+            }
+            updateImproListenButton();
+        }
+
+        function exitImproMode() {
+            stopImproBacking();
+            clearImproCall();
+            clearImproTimeouts();
+            state.impro.pendingStart = false;
+            if (state.impro.visualTimeout) {
+                clearTimeout(state.impro.visualTimeout);
+                state.impro.visualTimeout = null;
+            }
+            if (improUI.pianoEl) {
+                improUI.pianoEl.querySelectorAll('.impro-key.playing, .impro-key.contrast').forEach(k => {
+                    k.classList.remove('playing', 'contrast');
+                });
+            }
+            if (improUI.visualEl) {
+                improUI.visualEl.classList.remove('active', 'contrast');
+                improUI.visualEl.classList.add('soft');
+            }
+        }
+
+        function applyImproSpace(spaceId, { announce }) {
+            const space = improSpaces.find(s => s.id === spaceId) || improSpaces[0];
+            state.impro.currentSpace = space.id;
+            state.impro.currentScale = space.scale;
+            state.improPrefs.space = space.id;
+            saveImproPrefs(state.improPrefs);
+
+            if (improUI.worldsEl) {
+                improUI.worldsEl.querySelectorAll('.impro-world').forEach(card => {
+                    card.classList.toggle('active', card.dataset.space === space.id);
+                });
+            }
+
+            if (improUI.pianoEl) {
+                improUI.pianoEl.style.setProperty('--impro-color', space.color);
+                improUI.pianoEl.style.setProperty('--impro-glow', hexToRgba(space.color, 0.22));
+            }
+
+            updateImproAuraColor(space.color);
+            updateImproKeyHighlights();
+
+            if (announce) {
+                setImproStatus(`${space.emoji} ${space.name}: spiel frei und spür, wie es sich anfühlt.`);
+            }
+        }
+
+        function renderImproPiano() {
+            if (!improUI.pianoEl) return;
+            improUI.pianoEl.innerHTML = '';
+            const whiteWrap = document.createElement('div');
+            whiteWrap.className = 'impro-white-keys';
+            improUI.whiteContainer = whiteWrap;
+            improUI.pianoEl.appendChild(whiteWrap);
+
+            echoWhiteNotes.forEach((n) => {
+                const key = document.createElement('div');
+                key.className = 'impro-key white';
+                key.dataset.note = n;
+                key.setAttribute('aria-label', `Taste ${n}`);
+                whiteWrap.appendChild(key);
+            });
+
+            const blackNotes = ["C#", "D#", "F#", "G#", "A#"];
+            blackNotes.forEach((n) => {
+                const key = document.createElement('div');
+                key.className = 'impro-key black';
+                key.dataset.note = n;
+                key.setAttribute('aria-label', `Taste ${n}`);
+                improUI.pianoEl.appendChild(key);
+            });
+
+            layoutImproBlackKeys();
+            updateImproKeyHighlights();
+        }
+
+        function layoutImproBlackKeys() {
+            if (!improUI.pianoEl || !improUI.whiteContainer) return;
+            const pianoRect = improUI.pianoEl.getBoundingClientRect();
+            const whiteKeys = Array.from(improUI.whiteContainer.querySelectorAll('.impro-key.white'));
+            if (!pianoRect.width || whiteKeys.length < 7) return;
+
+            const blackMap = {
+                "C#": ["C", "D"],
+                "D#": ["D", "E"],
+                "F#": ["F", "G"],
+                "G#": ["G", "A"],
+                "A#": ["A", "B"]
+            };
+
+            const getWhiteByNote = (name) => whiteKeys[echoWhiteNotes.indexOf(name)];
+            const firstWhiteRect = whiteKeys[0].getBoundingClientRect();
+            const whiteW = firstWhiteRect.width;
+            const blackW = Math.max(24, Math.floor(whiteW * 0.62));
+
+            improUI.pianoEl.querySelectorAll('.impro-key.black').forEach((blackEl) => {
+                const pair = blackMap[blackEl.dataset.note];
+                if (!pair) return;
+                const leftWhite = getWhiteByNote(pair[0]);
+                const rightWhite = getWhiteByNote(pair[1]);
+                if (!leftWhite || !rightWhite) return;
+                const leftRect = leftWhite.getBoundingClientRect();
+                const rightRect = rightWhite.getBoundingClientRect();
+                const center = (leftRect.right + rightRect.left) / 2 - pianoRect.left;
+                blackEl.style.width = `${blackW}px`;
+                blackEl.style.left = `${Math.round(center - blackW / 2)}px`;
+            });
+        }
+
+        function updateImproKeyHighlights() {
+            if (!improUI.pianoEl) return;
+            const scale = improScales[state.impro.currentScale] || improScales.pentatonic_major;
+            improUI.pianoEl.querySelectorAll('.impro-key').forEach(key => {
+                const pc = noteNameToPitchClass(key.dataset.note);
+                const allowed = scale.includes(pc);
+                key.classList.toggle('allowed', allowed);
+            });
+        }
+
+        function setImproStatus(text) {
+            if (!improUI.statusEl) return;
+            improUI.statusEl.textContent = text;
+        }
+
+        function updateImproListenButton() {
+            if (!improUI.listenBtn) return;
+            if (!state.audioContext) {
+                improUI.listenBtn.textContent = '🎤 Zuhören';
+                return;
+            }
+            improUI.listenBtn.textContent = state.isListening ? '🎧 Ich höre' : '🎤 Zuhören';
+        }
+
+        function updateImproAuraColor(hexColor) {
+            if (!improUI.auraEl) return;
+            const core = hexToRgba(hexColor, 0.78);
+            const edge = hexToRgba(hexColor, 0.1);
+            improUI.auraEl.style.background = `radial-gradient(circle, ${core}, ${edge})`;
+            improUI.auraEl.style.boxShadow = `0 0 40px ${hexToRgba(hexColor, 0.35)}`;
+        }
+
+        function hexToRgba(hex, alpha) {
+            const clean = hex.replace('#', '');
+            if (clean.length !== 6) return `rgba(255, 255, 255, ${alpha})`;
+            const r = parseInt(clean.slice(0, 2), 16);
+            const g = parseInt(clean.slice(2, 4), 16);
+            const b = parseInt(clean.slice(4, 6), 16);
+            return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+        }
+
+        function ensureImproListening(userInitiated) {
+            if (!state.audioContext) {
+                if (userInitiated) state.impro.pendingStart = true;
+                document.getElementById('micModal').classList.add('active');
+                updateImproListenButton();
+                return;
+            }
+            if (state.audioContext.state === 'suspended') {
+                state.audioContext.resume().catch(() => {});
+            }
+            if (!state.isListening && state.analyser) {
+                state.isListening = true;
+                const micBtn = document.getElementById('micBtn');
+                if (micBtn) micBtn.classList.add('listening');
+                startNoteDetection();
+            }
+            updateImproListenButton();
+        }
+
+        function onImproStableNote(note) {
+            if (state.currentModule !== 'impro') return;
+            if (state.echo.isPlaying) return;
+            if (!note || typeof note.frequency !== 'number') return;
+
+            const scale = improScales[state.impro.currentScale] || improScales.pentatonic_major;
+            const pc = noteNameToPitchClass(note.name);
+            const isAllowed = scale.includes(pc);
+
+            highlightImproKey(note.name, isAllowed ? 'playing' : 'contrast', 260);
+            updateImproVisual(isAllowed);
+            updateImproTempo();
+            scheduleImproCall();
+
+            if (isAllowed) {
+                setImproStatus('Das klingt warm und rund. Spiel weiter.');
+            } else {
+                setImproStatus('Oh, ein spannender Kontrast.');
+            }
+        }
+
+        function highlightImproKey(noteName, className, holdMs) {
+            if (!improUI.pianoEl) return;
+            const normalized = normalizeNoteName(noteName);
+            const el = improUI.pianoEl.querySelector(`.impro-key[data-note="${normalized}"]`);
+            if (!el) return;
+            el.classList.add(className);
+            const t = setTimeout(() => el.classList.remove(className), holdMs || 240);
+            state.impro.timeouts.push(t);
+        }
+
+        function updateImproVisual(isAllowed) {
+            if (!improUI.visualEl) return;
+            if (state.impro.visualTimeout) {
+                clearTimeout(state.impro.visualTimeout);
+                state.impro.visualTimeout = null;
+            }
+            if (isAllowed) {
+                improUI.visualEl.classList.add('active');
+                improUI.visualEl.classList.remove('contrast');
+                improUI.visualEl.classList.remove('soft');
+                state.impro.visualTimeout = setTimeout(() => {
+                    if (state.currentModule !== 'impro') return;
+                    improUI.visualEl.classList.remove('active');
+                    improUI.visualEl.classList.add('soft');
+                }, 520);
+            } else {
+                improUI.visualEl.classList.add('contrast');
+                improUI.visualEl.classList.remove('active');
+                improUI.visualEl.classList.remove('soft');
+                setTimeout(() => {
+                    if (state.currentModule !== 'impro') return;
+                    improUI.visualEl.classList.remove('contrast');
+                    improUI.visualEl.classList.add('soft');
+                }, 420);
+            }
+        }
+
+        function updateImproTempo() {
+            const now = performance.now();
+            if (state.impro.lastNoteAt) {
+                const delta = now - state.impro.lastNoteAt;
+                if (delta > 120 && delta < 2000) {
+                    state.impro.tempoSamples.push(delta);
+                    if (state.impro.tempoSamples.length > 6) state.impro.tempoSamples.shift();
+                    const avg = state.impro.tempoSamples.reduce((a, b) => a + b, 0) / state.impro.tempoSamples.length;
+                    const bpm = clampNumber(Math.round(60000 / avg), 60, 140);
+                    state.impro.bpm = bpm;
+                }
+            }
+            state.impro.lastNoteAt = now;
+        }
+
+        function scheduleImproCall() {
+            if (!state.impro.responseEnabled) return;
+            clearImproCall();
+            state.impro.callTimeout = setTimeout(() => {
+                if (state.currentModule !== 'impro') return;
+                const now = performance.now();
+                if (now - state.impro.lastNoteAt < 1500) return;
+                playImproResponse(false);
+            }, 1800);
+        }
+
+        function clearImproCall() {
+            if (state.impro.callTimeout) {
+                clearTimeout(state.impro.callTimeout);
+                state.impro.callTimeout = null;
+            }
+        }
+
+        function clearImproTimeouts() {
+            if (!state.impro.timeouts.length) return;
+            state.impro.timeouts.forEach(clearTimeout);
+            state.impro.timeouts = [];
+        }
+
+        function playImproResponse(userInitiated) {
+            if (!state.audioContext) return;
+            if (!state.impro.responseEnabled) return;
+            if (state.audioContext.state === 'suspended') {
+                state.audioContext.resume().catch(() => {});
+            }
+            const now = performance.now();
+            if (!userInitiated && now - state.impro.lastResponseAt < 2500) return;
+
+            const scale = improScales[state.impro.currentScale] || improScales.pentatonic_major;
+            const rootPc = scale[0];
+            const otherPc = scale[Math.floor(Math.random() * scale.length)];
+            const noteNames = [noteStrings[rootPc], noteStrings[otherPc]];
+
+            const tempoMs = clampNumber(Math.round(60000 / state.impro.bpm), 380, 900);
+            const startAt = state.audioContext.currentTime + 0.05;
+
+            noteNames.forEach((noteName, i) => {
+                const when = startAt + (i * tempoMs) / 1000;
+                const duration = Math.max(0.18, tempoMs / 1000 * 0.8);
+                playImproTone(noteName, when, duration, 0.06);
+                const delay = Math.max(0, Math.round((when - startAt) * 1000));
+                setTimeout(() => highlightImproKey(noteName, 'playing', 240), delay);
+            });
+
+            state.impro.lastResponseAt = performance.now();
+        }
+
+        function playImproTone(noteName, when, duration, volume) {
+            const midi = noteNameToMidi(noteName, 4);
+            const freq = midi ? midiToFrequency(midi) : null;
+            if (!freq) return;
+            const ctx = state.audioContext;
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, when);
+            const peak = volume || 0.05;
+            gain.gain.setValueAtTime(0.0001, when);
+            gain.gain.linearRampToValueAtTime(peak, when + 0.02);
+            gain.gain.exponentialRampToValueAtTime(0.0001, when + duration);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start(when);
+            osc.stop(when + duration + 0.03);
+            state.echo.playNodes.push({ osc, gain });
+        }
+
+        function startImproBacking() {
+            if (!state.audioContext || state.impro.isBacking) return;
+            if (state.audioContext.state === 'suspended') {
+                state.audioContext.resume().catch(() => {});
+            }
+            state.impro.isBacking = true;
+            runImproBacking();
+        }
+
+        function stopImproBacking() {
+            state.impro.isBacking = false;
+            if (state.impro.backingTimer) {
+                clearTimeout(state.impro.backingTimer);
+                state.impro.backingTimer = null;
+            }
+        }
+
+        function runImproBacking() {
+            if (!state.impro.isBacking || state.currentModule !== 'impro') return;
+            const tempoMs = clampNumber(Math.round(60000 / state.impro.bpm), 420, 900);
+            const ctx = state.audioContext;
+            const now = performance.now();
+            const recentlyActive = now - state.impro.lastNoteAt < 5000;
+            const when = ctx.currentTime + 0.02;
+
+            if (recentlyActive) {
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(220, when);
+                gain.gain.setValueAtTime(0.0001, when);
+                gain.gain.linearRampToValueAtTime(0.012, when + 0.04);
+                gain.gain.exponentialRampToValueAtTime(0.0001, when + 0.25);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start(when);
+                osc.stop(when + 0.3);
+                state.echo.playNodes.push({ osc, gain });
+            }
+
+            state.impro.backingTimer = setTimeout(runImproBacking, tempoMs);
+        }
+
         // ==================== VISUALIZATION ====================
         function setupVisualization() {
             if (visualizerStarted) {
@@ -2230,6 +2995,7 @@
 
             // Route to the currently active module(s).
             onEchoStableNote(note);
+            onImproStableNote(note);
         }
 
         function updateNoteDisplay(note) {
@@ -2435,10 +3201,15 @@
                 startNoteDetection();
                 setupVisualization();
                 updateEchoControls();
+                updateImproListenButton();
 
                 if (state.currentModule === 'echo' && state.echo.pendingStart) {
                     state.echo.pendingStart = false;
                     startEchoRound({ replay: false });
+                }
+                if (state.currentModule === 'impro' && state.impro.pendingStart) {
+                    state.impro.pendingStart = false;
+                    enterImproMode();
                 }
             }
         });
@@ -2456,6 +3227,7 @@
                 startNoteDetection();
             }
             updateEchoControls();
+            updateImproListenButton();
         });
 
         document.getElementById('recordBtn').addEventListener('click', () => {
@@ -2518,6 +3290,7 @@
         createBackgroundParticles();
         setupModuleTabs();
         initEchoGame();
+        initImproPlayground();
         updateDiaryView();
         
         // Random prompt on load
