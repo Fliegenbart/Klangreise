@@ -699,6 +699,7 @@
 
         .island-map {
             position: relative;
+            isolation: isolate;
             min-height: 520px;
             border-radius: 2.5rem;
             padding: 2.5rem;
@@ -707,6 +708,28 @@
                         linear-gradient(160deg, rgba(22, 33, 62, 0.9), rgba(10, 12, 28, 0.98));
             border: 1px solid rgba(255, 255, 255, 0.08);
             overflow: hidden;
+        }
+
+        .island-video {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+            opacity: 0.85;
+            pointer-events: none;
+        }
+
+        .island-map::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            background: radial-gradient(circle at 20% 20%, rgba(255, 217, 61, 0.18), rgba(0, 0, 0, 0.6)),
+                        radial-gradient(circle at 80% 30%, rgba(77, 150, 255, 0.12), transparent 55%),
+                        linear-gradient(160deg, rgba(22, 33, 62, 0.55), rgba(6, 8, 20, 0.75));
         }
 
         .island-map[data-theme="night"] {
@@ -735,6 +758,7 @@
             background: radial-gradient(circle, rgba(255, 217, 61, 0.15), transparent 70%);
             opacity: 0.7;
             pointer-events: none;
+            z-index: 2;
         }
 
         .island-title {
@@ -758,6 +782,7 @@
             text-align: center;
             cursor: pointer;
             transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+            z-index: 3;
         }
 
         .island-landmark:hover {
@@ -806,6 +831,7 @@
             padding: 1.2rem 1.4rem;
             text-align: center;
             min-width: 180px;
+            z-index: 3;
         }
 
         .island-garden .landmark-icon {
@@ -1448,6 +1474,10 @@
             .bg-particles {
                 display: none;
             }
+
+            .island-video {
+                display: none;
+            }
         }
     </style>
 </head>
@@ -1477,6 +1507,9 @@
             <div class="island-title">Deine Klang-Insel</div>
             <div class="island-subtitle">Tippe ein Wahrzeichen an, um loszulegen.</div>
             <div class="island-map" id="islandMap" data-theme="sunrise">
+                <video class="island-video" id="islandVideo" autoplay muted loop playsinline preload="metadata">
+                    <source src="assets/video/island.mp4" type="video/mp4">
+                </video>
                 <div class="island-glow"></div>
                 <button class="island-landmark" style="left: 8%; top: 18%;" data-landmark="echo" data-screen="play" data-module="echo">
                     <div class="landmark-icon">⛰️</div>
@@ -2174,6 +2207,22 @@
             }
         }
 
+        function updateIslandVideoPlayback(screenId) {
+            const video = document.getElementById('islandVideo');
+            if (!video) return;
+            if (reduceMotionQuery.matches) {
+                video.pause();
+                return;
+            }
+            if (screenId === 'island') {
+                // Muted autoplay should work on iOS/Safari, but keep this safe.
+                video.muted = true;
+                video.play().catch(() => {});
+            } else {
+                video.pause();
+            }
+        }
+
         function updateCompassVisibility(screenId) {
             const compass = document.getElementById('compassBtn');
             if (!compass) return;
@@ -2200,6 +2249,8 @@
                 const exists = document.getElementById(`module-${candidate}`);
                 setActiveModule(exists ? candidate : 'free');
             }
+
+            updateIslandVideoPlayback(screenId);
 
             appState.session.activeScreen = screenId;
             appState.session.activeModule = state.currentModule;
