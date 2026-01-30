@@ -3118,24 +3118,63 @@
         function initImproBackingTracks() {
             if (Object.keys(state.impro.backingTracks).length) return;
             improSpaces.forEach((space) => {
-                const audio = new Audio(`assets/audio/backing/${space.id}.mp3`);
+                const audio = new Audio();
                 audio.loop = true;
-                audio.preload = 'auto';
+                // Avoid downloading all backings upfront (WAV can be large). We'll lazy-load on first use.
+                audio.preload = 'none';
                 audio.volume = state.impro.backingVolume;
+
+                audio._krCandidates = [
+                    `assets/audio/backing/${space.id}.wav`,
+                    `assets/audio/backing/${space.id}.mp3`,
+                    `assets/audio/backing/${space.id}.m4a`
+                ];
+                audio._krCandidateIndex = 0;
+                audio._krStarted = false;
+                audio._krResolved = false;
+
+                const tryCurrent = () => {
+                    if (audio._krCandidateIndex >= audio._krCandidates.length) {
+                        audio._krResolved = true;
+                        state.impro.backingReady[space.id] = false;
+                        return;
+                    }
+                    audio.src = audio._krCandidates[audio._krCandidateIndex];
+                    audio.load();
+                };
+
                 audio.addEventListener('canplaythrough', () => {
+                    if (audio._krResolved) return;
+                    audio._krResolved = true;
                     state.impro.backingReady[space.id] = true;
                     if (state.currentModule === 'impro' && state.impro.currentSpace === space.id) {
                         startImproBacking();
                     }
                 });
                 audio.addEventListener('error', () => {
-                    state.impro.backingReady[space.id] = false;
+                    if (audio._krResolved) return;
+                    audio._krCandidateIndex += 1;
+                    tryCurrent();
                 });
+
                 state.impro.backingTracks[space.id] = audio;
+                state.impro.backingReady[space.id] = false;
             });
         }
 
+        function requestImproBackingLoad(spaceId) {
+            const audio = state.impro.backingTracks[spaceId];
+            if (!audio) return;
+            if (audio._krStarted) return;
+            audio._krStarted = true;
+            audio._krCandidateIndex = 0;
+            audio._krResolved = false;
+            audio.src = audio._krCandidates[0];
+            audio.load();
+        }
+
         function playImproBackingTrack(spaceId) {
+            requestImproBackingLoad(spaceId);
             const audio = state.impro.backingTracks[spaceId];
             if (!audio || !state.impro.backingReady[spaceId]) return false;
             if (state.impro.activeBackingId && state.impro.activeBackingId !== spaceId) {

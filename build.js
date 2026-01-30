@@ -5,6 +5,8 @@ const root = __dirname;
 const srcPath = path.join(root, 'klangreise.html');
 const outDir = path.join(root, 'dist');
 const outPath = path.join(outDir, 'index.html');
+const assetsSrcDir = path.join(root, 'assets');
+const assetsOutDir = path.join(outDir, 'assets');
 
 if (!fs.existsSync(srcPath)) {
   console.error('Source file not found:', srcPath);
@@ -15,6 +17,30 @@ async function run() {
   const html = fs.readFileSync(srcPath, 'utf8');
   let result = html;
   let minified = false;
+
+  function removeDirIfExists(dir) {
+    if (!fs.existsSync(dir)) return;
+    if (typeof fs.rmSync === 'function') {
+      fs.rmSync(dir, { recursive: true, force: true });
+      return;
+    }
+    // Node <14.14 fallback.
+    fs.rmdirSync(dir, { recursive: true });
+  }
+
+  function copyDir(src, dest) {
+    if (!fs.existsSync(src)) return;
+    fs.mkdirSync(dest, { recursive: true });
+    for (const entry of fs.readdirSync(src, { withFileTypes: true })) {
+      const srcPath = path.join(src, entry.name);
+      const destPath = path.join(dest, entry.name);
+      if (entry.isDirectory()) {
+        copyDir(srcPath, destPath);
+      } else if (entry.isFile()) {
+        fs.copyFileSync(srcPath, destPath);
+      }
+    }
+  }
 
   try {
     const { minify } = require('html-minifier-terser');
@@ -39,6 +65,10 @@ async function run() {
 
   fs.mkdirSync(outDir, { recursive: true });
   fs.writeFileSync(outPath, result, 'utf8');
+
+  // Copy static assets (audio/images) into dist so Vercel can serve them from outputDirectory.
+  removeDirIfExists(assetsOutDir);
+  copyDir(assetsSrcDir, assetsOutDir);
 
   const inSize = Buffer.byteLength(html, 'utf8');
   const outSize = Buffer.byteLength(result, 'utf8');
