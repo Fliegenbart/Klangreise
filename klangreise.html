@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KlangReise – Entdecke die Magie der Musik</title>
+    <meta name="theme-color" content="#1a1a2e">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="KlangReise">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="assets/images/icon-180.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
@@ -110,11 +116,7 @@
 
         /* Navigation Tabs */
         .nav-tabs {
-            display: flex;
-            justify-content: center;
-            gap: 0.5rem;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
+            display: none;
         }
 
         .nav-tab {
@@ -140,6 +142,89 @@
             color: white;
             border-color: transparent;
             box-shadow: 0 4px 20px rgba(155, 93, 229, 0.4);
+        }
+
+        /* Parent Drawer */
+        .parent-btn {
+            position: fixed;
+            top: 1.4rem;
+            right: 1.4rem;
+            width: 52px;
+            height: 52px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-light);
+            font-size: 1.4rem;
+            cursor: pointer;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .parent-btn.holding {
+            transform: scale(0.98);
+            box-shadow: 0 0 0 4px rgba(255, 217, 61, 0.25);
+        }
+
+        .parent-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(8, 10, 20, 0.55);
+            backdrop-filter: blur(2px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+            z-index: 18;
+        }
+
+        .parent-backdrop.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .parent-drawer {
+            position: fixed;
+            top: 0;
+            right: 0;
+            height: 100%;
+            width: min(320px, 90vw);
+            background: rgba(16, 20, 40, 0.96);
+            border-left: 1px solid rgba(255, 255, 255, 0.12);
+            transform: translateX(110%);
+            transition: transform 0.25s ease;
+            z-index: 19;
+            padding: 1.6rem 1.4rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .parent-drawer.open {
+            transform: translateX(0);
+        }
+
+        .parent-drawer h3 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.3rem;
+        }
+
+        .parent-drawer .nav-tabs {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .parent-close {
+            align-self: flex-start;
+            border: none;
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-light);
+            border-radius: 999px;
+            padding: 0.5rem 0.9rem;
+            cursor: pointer;
         }
 
         /* Screens */
@@ -805,6 +890,17 @@
             cursor: not-allowed;
             transform: none;
             box-shadow: none;
+        }
+
+        .island-landmark.disabled::after {
+            content: '';
+            position: absolute;
+            inset: -6px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.25), rgba(10, 12, 26, 0.75));
+            filter: blur(6px);
+            opacity: 0.6;
+            border-radius: 1.8rem;
+            pointer-events: none;
         }
 
         .landmark-icon {
@@ -1719,16 +1815,6 @@
             <p class="tagline">Entdecke die Magie der Musik</p>
         </header>
 
-        <!-- Navigation -->
-        <nav class="nav-tabs">
-            <button class="nav-tab active" data-screen="island">Insel</button>
-            <button class="nav-tab" data-screen="welcome">Start</button>
-            <button class="nav-tab" data-screen="play">Spielen</button>
-            <button class="nav-tab" data-screen="worlds">Klangwelten</button>
-            <button class="nav-tab" data-screen="diary">Klangtagebuch</button>
-            <button class="nav-tab" data-screen="garden">Mein Garten</button>
-        </nav>
-
         <!-- Island Screen -->
         <section class="screen active island-screen" id="island">
             <div class="island-title">Deine Klang-Insel</div>
@@ -2022,6 +2108,21 @@
             </div>
         </section>
     </div>
+
+    <button class="parent-btn" id="parentBtn" aria-label="Elternmenü">☀️</button>
+    <div class="parent-backdrop" id="parentBackdrop"></div>
+    <aside class="parent-drawer" id="parentDrawer" aria-hidden="true">
+        <h3>Elternbereich</h3>
+        <button class="parent-close" id="parentClose">Schließen</button>
+        <nav class="nav-tabs">
+            <button class="nav-tab active" data-screen="island">Insel</button>
+            <button class="nav-tab" data-screen="welcome">Start</button>
+            <button class="nav-tab" data-screen="play">Spielen</button>
+            <button class="nav-tab" data-screen="worlds">Klangwelten</button>
+            <button class="nav-tab" data-screen="diary">Klangtagebuch</button>
+            <button class="nav-tab" data-screen="garden">Mein Garten</button>
+        </nav>
+    </aside>
 
     <button class="compass-btn hidden" id="compassBtn" aria-label="Zur Insel">🧭</button>
 
@@ -4690,10 +4791,67 @@
             `;
         }
 
+        // ==================== PARENT MENU ====================
+        let parentHoldTimer = null;
+
+        function openParentDrawer() {
+            const drawer = document.getElementById('parentDrawer');
+            const backdrop = document.getElementById('parentBackdrop');
+            if (drawer) {
+                drawer.classList.add('open');
+                drawer.setAttribute('aria-hidden', 'false');
+            }
+            if (backdrop) backdrop.classList.add('active');
+        }
+
+        function closeParentDrawer() {
+            const drawer = document.getElementById('parentDrawer');
+            const backdrop = document.getElementById('parentBackdrop');
+            if (drawer) {
+                drawer.classList.remove('open');
+                drawer.setAttribute('aria-hidden', 'true');
+            }
+            if (backdrop) backdrop.classList.remove('active');
+        }
+
+        function attachParentMenu() {
+            const btn = document.getElementById('parentBtn');
+            const backdrop = document.getElementById('parentBackdrop');
+            const closeBtn = document.getElementById('parentClose');
+            if (!btn) return;
+
+            const startHold = () => {
+                if (parentHoldTimer) return;
+                btn.classList.add('holding');
+                parentHoldTimer = setTimeout(() => {
+                    parentHoldTimer = null;
+                    btn.classList.remove('holding');
+                    openParentDrawer();
+                }, 1200);
+            };
+
+            const cancelHold = () => {
+                if (parentHoldTimer) {
+                    clearTimeout(parentHoldTimer);
+                    parentHoldTimer = null;
+                }
+                btn.classList.remove('holding');
+            };
+
+            btn.addEventListener('pointerdown', startHold);
+            btn.addEventListener('pointerup', cancelHold);
+            btn.addEventListener('pointerleave', cancelHold);
+            btn.addEventListener('pointercancel', cancelHold);
+
+            if (backdrop) backdrop.addEventListener('click', closeParentDrawer);
+            if (closeBtn) closeBtn.addEventListener('click', closeParentDrawer);
+        }
+
         // ==================== EVENT HANDLERS ====================
         document.querySelectorAll('.nav-tab').forEach(tab => {
             tab.addEventListener('click', () => {
                 openScreen(tab.dataset.screen);
+                closeParentDrawer();
             });
         });
 
@@ -4827,6 +4985,15 @@
             container.appendChild(fragment);
         }
 
+        function registerServiceWorker() {
+            if (!('serviceWorker' in navigator)) return;
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('service-worker.js').catch((err) => {
+                    console.warn('Service worker registration failed:', err);
+                });
+            });
+        }
+
         // ==================== INIT ====================
         window.addEventListener('beforeunload', () => {
             if (gardenSaveTimeout) {
@@ -4840,6 +5007,8 @@
         initEchoGame();
         initChordExplorer();
         initImproPlayground();
+        attachParentMenu();
+        registerServiceWorker();
         applyIslandTheme();
         updateIslandView();
         openScreen('island');

@@ -7,6 +7,10 @@ const outDir = path.join(root, 'dist');
 const outPath = path.join(outDir, 'index.html');
 const assetsSrcDir = path.join(root, 'assets');
 const assetsOutDir = path.join(outDir, 'assets');
+const manifestSrcPath = path.join(root, 'manifest.json');
+const manifestOutPath = path.join(outDir, 'manifest.json');
+const swSrcPath = path.join(root, 'service-worker.js');
+const swOutPath = path.join(outDir, 'service-worker.js');
 
 if (!fs.existsSync(srcPath)) {
   console.error('Source file not found:', srcPath);
@@ -69,6 +73,12 @@ async function run() {
   // Copy static assets (audio/images) into dist so Vercel can serve them from outputDirectory.
   removeDirIfExists(assetsOutDir);
   copyDir(assetsSrcDir, assetsOutDir);
+  if (fs.existsSync(manifestSrcPath)) {
+    fs.copyFileSync(manifestSrcPath, manifestOutPath);
+  }
+  if (fs.existsSync(swSrcPath)) {
+    fs.copyFileSync(swSrcPath, swOutPath);
+  }
 
   const inSize = Buffer.byteLength(html, 'utf8');
   const outSize = Buffer.byteLength(result, 'utf8');
