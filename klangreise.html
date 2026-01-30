@@ -377,6 +377,7 @@
             border-radius: 1.5rem;
             padding: 1.5rem;
             text-align: center;
+            display: none;
         }
 
         .notes-label {
@@ -802,6 +803,14 @@
                         linear-gradient(160deg, rgba(22, 33, 62, 0.9), rgba(10, 12, 28, 0.98));
             border: 1px solid rgba(255, 255, 255, 0.08);
             overflow: hidden;
+            transition: transform 0.45s ease, filter 0.45s ease;
+            transform-origin: var(--zoom-origin-x, 50%) var(--zoom-origin-y, 50%);
+            will-change: transform;
+        }
+
+        .island-map.zooming {
+            transform: scale(1.06);
+            filter: saturate(1.08) brightness(1.05);
         }
 
         .island-video {
@@ -923,6 +932,11 @@
             border-radius: 999px;
             background: rgba(0, 0, 0, 0.35);
             color: var(--text-light);
+        }
+
+        .landmark-badge.mist {
+            background: rgba(255, 255, 255, 0.18);
+            color: rgba(255, 255, 255, 0.85);
         }
 
         .island-garden {
@@ -1302,7 +1316,7 @@
         }
 
         .chord-notes {
-            display: flex;
+            display: none;
             gap: 0.5rem;
             flex-wrap: wrap;
         }
@@ -1371,6 +1385,47 @@
             opacity: 0.25;
             transform: scale(0.9);
             transition: transform 0.25s ease, opacity 0.25s ease, filter 0.25s ease;
+            z-index: 2;
+        }
+
+        .chord-particles {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1;
+        }
+
+        .chord-visual.flutter .chord-particles {
+            opacity: 1;
+            background:
+                radial-gradient(circle, rgba(255, 255, 255, 0.7) 0 18%, transparent 20%),
+                radial-gradient(circle, rgba(255, 217, 61, 0.55) 0 12%, transparent 18%),
+                radial-gradient(circle, rgba(107, 203, 119, 0.55) 0 14%, transparent 20%);
+            background-size: 32px 32px, 40px 40px, 36px 36px;
+            animation: flutterGlow 1.2s infinite ease-in-out;
+        }
+
+        .chord-visual.deep .chord-particles {
+            opacity: 0.85;
+            background:
+                radial-gradient(circle, rgba(77, 150, 255, 0.4) 0 22%, transparent 30%),
+                radial-gradient(circle, rgba(10, 12, 26, 0.7) 0 35%, transparent 45%);
+            background-size: 80px 80px, 120px 120px;
+            animation: deepPulse 2.8s infinite ease-in-out;
+        }
+
+        @keyframes flutterGlow {
+            0% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-6px) scale(1.03); }
+            100% { transform: translateY(0) scale(1); }
+        }
+
+        @keyframes deepPulse {
+            0% { transform: scale(0.98); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(0.98); }
         }
 
         .chord-visual.active .chord-aura {
@@ -1379,10 +1434,10 @@
         }
 
         .chord-emoji-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
-            gap: 0.6rem;
-            margin-top: 0.8rem;
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 0.8rem auto 0;
         }
 
         .chord-emoji-btn {
@@ -1393,6 +1448,13 @@
             font-size: 1.8rem;
             cursor: pointer;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform:
+                rotate(var(--angle, 0deg))
+                translateX(var(--ring-radius, 70px))
+                rotate(calc(var(--angle, 0deg) * -1));
         }
 
         .chord-emoji-btn:hover {
@@ -1842,12 +1904,12 @@
                 <button class="island-landmark" style="right: 12%; bottom: 18%;" data-landmark="stories" data-screen="play" data-module="stories" data-disabled="true" disabled>
                     <div class="landmark-icon">🌳</div>
                     <div class="landmark-label">Vorlese-Eiche</div>
-                    <div class="landmark-badge">Bald</div>
+                    <div class="landmark-badge mist">🌫️</div>
                 </button>
                 <button class="island-landmark" style="left: 52%; top: 12%;" data-landmark="feelings" data-screen="play" data-module="feelings" data-disabled="true" disabled>
                     <div class="landmark-icon">🥚</div>
                     <div class="landmark-label">Gefühls-Nest</div>
-                    <div class="landmark-badge">Bald</div>
+                    <div class="landmark-badge mist">🌫️</div>
                 </button>
                 <button class="island-garden" id="islandGarden" data-screen="garden">
                     <div class="landmark-icon">🌿</div>
@@ -1899,13 +1961,6 @@
                         <canvas class="visualization-canvas" id="visualizer"></canvas>
                     </div>
 
-                    <!-- Notes Display -->
-                    <div class="notes-display">
-                        <div class="notes-label">Du spielst gerade:</div>
-                        <div class="detected-note" id="currentNote">🎹</div>
-                        <div class="note-history" id="noteHistory"></div>
-                    </div>
-
                     <!-- Controls -->
                     <div class="controls-area">
                         <button class="control-btn" id="micBtn" title="Mikrofon starten">🎤</button>
@@ -1949,15 +2004,14 @@
                     <div class="chord-header">
                         <div>
                             <div class="chord-title">Kristall-Lagune</div>
-                            <div class="chord-subtitle">Spiele mehrere Tasten zusammen und spüre die Farbe des Klangs.</div>
+                            <div class="chord-subtitle">Spüre die Farbe deines Klangs.</div>
                         </div>
                     </div>
 
-                    <div class="chord-status" id="chordStatus">Tippe auf „Zuhören“ und spiel dann zwei bis drei Tasten zusammen.</div>
+                    <div class="chord-status" id="chordStatus">Tippe auf 🎤 und spiel. Ich höre zu.</div>
 
                     <div class="chord-prompt">
-                        <span id="chordPromptText">Spiel mal diese Tasten:</span>
-                        <div class="chord-notes" id="chordNoteList"></div>
+                        <span id="chordPromptText">🦋 Spiel mal, wie sich ein Schmetterling anhört.</span>
                     </div>
 
                     <div class="chord-controls">
@@ -1967,13 +2021,14 @@
 
                     <div class="chord-visual" id="chordVisual">
                         <div class="chord-aura" id="chordAura"></div>
+                        <div class="chord-particles" id="chordParticles"></div>
                     </div>
 
                     <div class="chord-piano-wrap">
                         <div class="chord-piano" id="chordPiano" aria-label="Klaviatur (Akkorde)"></div>
                     </div>
 
-                    <div class="chord-status" id="chordFeelingPrompt">Wie fühlt sich das für dich an?</div>
+                    <div class="chord-status" id="chordFeelingPrompt">💫 Gefühl wählen</div>
                     <div class="chord-emoji-grid" id="chordEmojiGrid"></div>
                 </div>
             </div>
@@ -2324,7 +2379,9 @@
                 visualTimeout: null,
                 timeouts: [],
                 collected: new Map(),
+                noteWindow: [],
                 lastDetectedAt: 0,
+                lastExpression: null,
                 pendingChord: null,
                 history: safeJsonParse(localStorage.getItem('klangreise_chords') || '[]', [])
             },
@@ -2347,6 +2404,7 @@
         let visualizerStarted = false;
         let visualizerResize = null;
         let activeAudio = null;
+        let islandZoomTimeout = null;
 
         // ==================== PROMPTS ====================
         const prompts = [
@@ -2425,6 +2483,12 @@
             { id: 'floating', notes: ['C', 'E', 'G#'], mood: 'schwebend', color: '#ff6b6b', type: 'augmented' },
             { id: 'open', notes: ['C', 'F', 'G'], mood: 'offen', color: '#6bcb77', type: 'sus4' },
             { id: 'jazzy', notes: ['C', 'E', 'G', 'B'], mood: 'jazzig', color: '#ffd93d', type: 'dom7' }
+        ];
+
+        const chordPrompts = [
+            { id: 'butterfly', text: '🦋 Spiel mal, wie sich ein Schmetterling anhört.' },
+            { id: 'giant', text: '🐘 Spiel mal, wie sich ein schlafender Riese anhört.' },
+            { id: 'sparkle', text: '✨ Spiel glitzernde Tropfen.' }
         ];
 
         const chordEmotionMap = {
@@ -2629,6 +2693,35 @@
                 video.play().catch(() => {});
             } else {
                 video.pause();
+            }
+        }
+
+        function triggerIslandZoom(targetEl, onDone) {
+            const map = document.getElementById('islandMap');
+            if (!map || !targetEl) {
+                if (typeof onDone === 'function') onDone();
+                return;
+            }
+
+            const mapRect = map.getBoundingClientRect();
+            const targetRect = targetEl.getBoundingClientRect();
+            const originX = ((targetRect.left + targetRect.width / 2) - mapRect.left) / mapRect.width * 100;
+            const originY = ((targetRect.top + targetRect.height / 2) - mapRect.top) / mapRect.height * 100;
+            map.style.setProperty('--zoom-origin-x', `${originX}%`);
+            map.style.setProperty('--zoom-origin-y', `${originY}%`);
+
+            map.classList.remove('zooming');
+            void map.offsetWidth;
+            map.classList.add('zooming');
+
+            if (islandZoomTimeout) clearTimeout(islandZoomTimeout);
+            islandZoomTimeout = setTimeout(() => {
+                map.classList.remove('zooming');
+                islandZoomTimeout = null;
+            }, 520);
+
+            if (typeof onDone === 'function') {
+                setTimeout(onDone, 260);
             }
         }
 
@@ -3324,7 +3417,7 @@
             renderChordPiano();
             const startIndex = Math.floor(Math.random() * chordExplorations.length);
             setChordPrompt(startIndex, { announce: false });
-            renderChordEmojis('mystery');
+            renderChordEmojis();
             updateChordListenButton();
 
             if (chordUI.listenBtn) {
@@ -3359,10 +3452,10 @@
             }
             if (state.audioContext && state.isListening) {
                 state.chord.active = true;
-                setChordStatus('Spiel zwei bis drei Tasten zusammen. Ich höre zu.');
+                setChordStatus('🎧 Spiel zwei oder drei Tasten.');
             } else {
                 state.chord.active = false;
-                setChordStatus('Tippe auf „Zuhören“, damit ich deinen Klang hören kann.');
+                setChordStatus('Tippe auf 🎤, dann spiel.');
             }
             updateChordListenButton();
         }
@@ -3415,7 +3508,7 @@
                 startNoteDetection();
             }
             state.chord.active = true;
-            setChordStatus('Spiel zwei bis drei Tasten zusammen und wähle ein Gefühl.');
+            setChordStatus('🎧 Spiel. Gefühl auswählen.');
             updateChordListenButton();
         }
 
@@ -3425,24 +3518,18 @@
             state.chord.prompt = chordExplorations[safeIndex];
             applyChordPrompt();
             if (announce) {
-                setChordStatus('Neue Klangfarbe. Spiel die leuchtenden Tasten zusammen.');
+                setChordStatus('✨ Neue Klangidee.');
             }
         }
 
         function applyChordPrompt() {
             const prompt = state.chord.prompt || chordExplorations[0];
-            if (chordUI.noteListEl) {
-                chordUI.noteListEl.innerHTML = '';
-                prompt.notes.forEach((note) => {
-                    const chip = document.createElement('span');
-                    chip.className = 'chord-note';
-                    chip.textContent = note;
-                    chordUI.noteListEl.appendChild(chip);
-                });
-            }
+            const cue = chordPrompts[state.chord.promptIndex % chordPrompts.length] || chordPrompts[0];
+            if (chordUI.promptTextEl) chordUI.promptTextEl.textContent = cue.text;
+            if (chordUI.visualEl) chordUI.visualEl.classList.remove('flutter', 'deep');
             setChordTargets(prompt.notes);
             updateChordAura(prompt.color || '#ffd93d');
-            renderChordEmojis(prompt.type || 'mystery');
+            renderChordEmojis();
             state.chord.pendingChord = null;
         }
 
@@ -3548,17 +3635,21 @@
             }, 760);
         }
 
-        function renderChordEmojis(typeId) {
+        function renderChordEmojis() {
             if (!chordUI.emojiGridEl) return;
-            const emojis = chordEmotionMap[typeId] || chordEmotionMap.mystery || ['✨', '🌙', '😊'];
+            const emojis = ['😊', '😢', '😱'];
             chordUI.emojiGridEl.innerHTML = '';
+            const radius = 70;
+            chordUI.emojiGridEl.style.setProperty('--ring-radius', `${radius}px`);
             emojis.forEach((emoji, index) => {
                 const btn = document.createElement('button');
                 btn.className = 'chord-emoji-btn';
-                if (index < 3) btn.classList.add('suggested');
+                btn.classList.add('suggested');
                 btn.dataset.emoji = emoji;
                 btn.setAttribute('aria-label', `Gefühl ${emoji}`);
                 btn.textContent = emoji;
+                const angle = (360 / emojis.length) * index;
+                btn.style.setProperty('--angle', `${angle}deg`);
                 chordUI.emojiGridEl.appendChild(btn);
             });
         }
@@ -3569,6 +3660,55 @@
                 state.chord.windowTimeout = null;
             }
             state.chord.collected.clear();
+            state.chord.noteWindow = [];
+        }
+
+        function analyzeChordExpression(noteWindow) {
+            if (!noteWindow || !noteWindow.length) {
+                return { id: 'neutral', label: '✨', status: '✨ Klang entdecken' };
+            }
+
+            const midis = noteWindow
+                .map(entry => entry.midi)
+                .filter(value => typeof value === 'number' && !Number.isNaN(value));
+            const avgMidi = midis.length
+                ? midis.reduce((a, b) => a + b, 0) / midis.length
+                : null;
+
+            const times = noteWindow.map(entry => entry.time).filter(Boolean);
+            let avgDelta = null;
+            if (times.length >= 2) {
+                const deltas = [];
+                for (let i = 1; i < times.length; i++) {
+                    const delta = times[i] - times[i - 1];
+                    if (delta > 0) deltas.push(delta);
+                }
+                if (deltas.length) {
+                    avgDelta = deltas.reduce((a, b) => a + b, 0) / deltas.length;
+                }
+            }
+
+            const isHigh = avgMidi !== null && avgMidi >= 72;
+            const isLow = avgMidi !== null && avgMidi <= 55;
+            const isFast = avgDelta !== null && avgDelta < 350;
+            const isSlow = avgDelta !== null && avgDelta > 700;
+
+            if (isHigh && isFast) {
+                return { id: 'butterfly', label: '🦋', status: '🦋 Hell & schnell', className: 'flutter', color: '#ffd93d' };
+            }
+            if (isLow && isSlow) {
+                return { id: 'giant', label: '🐘', status: '🐘 Tief & ruhig', className: 'deep', color: '#4d96ff' };
+            }
+
+            return { id: 'neutral', label: '✨', status: '✨ Klang entdecken' };
+        }
+
+        function applyChordExpression(expression) {
+            if (!expression || !chordUI.visualEl) return;
+            chordUI.visualEl.classList.remove('flutter', 'deep');
+            if (expression.className) chordUI.visualEl.classList.add(expression.className);
+            if (expression.color) updateChordAura(expression.color);
+            if (expression.status) setChordStatus(expression.status);
         }
 
         function clearChordTimeouts() {
@@ -3598,12 +3738,14 @@
             state.chord.windowTimeout = null;
             const notes = Array.from(state.chord.collected.values());
             state.chord.collected.clear();
+            const expression = analyzeChordExpression(state.chord.noteWindow);
+            state.chord.noteWindow = [];
             if (!notes.length) return;
 
             const pitchClasses = notes.map(n => noteNameToPitchClass(n.name)).filter(pc => pc >= 0);
             const unique = Array.from(new Set(pitchClasses));
             if (unique.length < 2) {
-                setChordStatus('Spiel noch eine Taste dazu, damit ich die Farbe hören kann.');
+                setChordStatus('Spiel noch eine Taste dazu.');
                 return;
             }
 
@@ -3612,7 +3754,9 @@
             const color = detected?.color || prompt.color || '#ffd93d';
             const typeId = detected?.id || prompt.type || 'mystery';
             pulseChordAura(color);
-            renderChordEmojis(typeId);
+            renderChordEmojis();
+            applyChordExpression(expression);
+            state.chord.lastExpression = expression?.id || null;
 
             state.chord.pendingChord = {
                 timestamp: Date.now(),
@@ -3625,9 +3769,9 @@
             };
 
             if (detected) {
-                setChordStatus(`Das klingt ${detected.mood}. Wie fühlt sich das für dich an?`);
+                setChordStatus(`${expression?.status || '✨'} – Gefühl wählen.`);
             } else {
-                setChordStatus('Spannend! Wie fühlt sich das für dich an?');
+                setChordStatus(`${expression?.status || '✨'} – Gefühl wählen.`);
             }
         }
 
@@ -3639,15 +3783,18 @@
 
             const pc = noteNameToPitchClass(note.name);
             if (pc < 0) return;
-            state.chord.lastDetectedAt = performance.now();
+            const now = performance.now();
+            state.chord.lastDetectedAt = now;
 
             if (!state.chord.windowTimeout) {
                 clearChordWindow();
                 state.chord.pendingChord = null;
-                setChordStatus('Ich höre... spiel noch eine Taste dazu.');
+                setChordStatus('🎧 Ich höre...');
                 state.chord.windowTimeout = setTimeout(finalizeChordWindow, state.chord.windowMs);
             }
 
+            state.chord.noteWindow.push({ midi: note.midi, time: now });
+            if (state.chord.noteWindow.length > 12) state.chord.noteWindow.shift();
             state.chord.collected.set(pc, note);
             highlightChordKey(note.name, 'playing', 260);
         }
@@ -3655,7 +3802,7 @@
         function handleChordEmotionSelect(emoji) {
             const prompt = state.chord.prompt || chordExplorations[0];
             if (!state.chord.pendingChord) {
-                setChordStatus('Spiel erst einen Klang, dann wähle ein Gefühl.');
+                setChordStatus('Spiel zuerst.');
                 return;
             }
             const entry = {
@@ -3686,7 +3833,7 @@
             updateIslandView();
 
             state.chord.pendingChord = null;
-            setChordStatus(`Wundervoll! Dein Gefühl ${emoji} gehört jetzt zu diesem Klang.`);
+            setChordStatus(`${emoji} Gespeichert.`);
         }
 
         // ==================== IMPRO PLAYGROUND ====================
@@ -4870,11 +5017,13 @@
             landmark.addEventListener('click', () => {
                 const screen = landmark.dataset.screen || 'play';
                 const module = landmark.dataset.module || null;
-                if (module) {
-                    openModule(module);
-                } else {
-                    openScreen(screen);
-                }
+                triggerIslandZoom(landmark, () => {
+                    if (module) {
+                        openModule(module);
+                    } else {
+                        openScreen(screen);
+                    }
+                });
             });
         });
 
