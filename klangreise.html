@@ -36,6 +36,11 @@
             overflow-x: hidden;
         }
 
+        body.island-mode {
+            /* Calmer frame around the island map so it reads clearly. */
+            background: linear-gradient(135deg, #0b1020 0%, #0a1428 100%);
+        }
+
         /* Animated background particles */
         .bg-particles {
             position: fixed;
@@ -46,6 +51,10 @@
             pointer-events: none;
             overflow: hidden;
             z-index: 0;
+        }
+
+        body.island-mode .bg-particles {
+            display: none;
         }
 
         .particle {
@@ -717,7 +726,7 @@
             height: 100%;
             object-fit: cover;
             z-index: 0;
-            opacity: 0.85;
+            opacity: 1;
             pointer-events: none;
         }
 
@@ -727,9 +736,9 @@
             inset: 0;
             z-index: 1;
             pointer-events: none;
-            background: radial-gradient(circle at 20% 20%, rgba(255, 217, 61, 0.18), rgba(0, 0, 0, 0.6)),
+            background: radial-gradient(circle at 20% 20%, rgba(255, 217, 61, 0.12), rgba(0, 0, 0, 0.45)),
                         radial-gradient(circle at 80% 30%, rgba(77, 150, 255, 0.12), transparent 55%),
-                        linear-gradient(160deg, rgba(22, 33, 62, 0.55), rgba(6, 8, 20, 0.75));
+                        linear-gradient(160deg, rgba(22, 33, 62, 0.38), rgba(6, 8, 20, 0.6));
         }
 
         .island-map[data-theme="night"] {
@@ -756,7 +765,7 @@
             width: 380px;
             height: 380px;
             background: radial-gradient(circle, rgba(255, 217, 61, 0.15), transparent 70%);
-            opacity: 0.7;
+            opacity: 0.35;
             pointer-events: none;
             z-index: 2;
         }
@@ -2231,6 +2240,7 @@
         }
 
         function openScreen(screenId) {
+            document.body.classList.toggle('island-mode', screenId === 'island');
             document.querySelectorAll('.nav-tab').forEach((tab) => {
                 tab.classList.toggle('active', tab.dataset.screen === screenId);
             });
